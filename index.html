@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Escala de músicos da Comunidade Mundo Novo"
+    />
+    <title>Escala de Música - Comunidade Mundo Novo</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="#/public" aria-label="Escala pública">
+        <span class="brand-mark">MN</span>
+        <span>
+          <strong>Escala de Música</strong>
+          <small>Comunidade Mundo Novo</small>
+        </span>
+      </a>
+
+      <nav class="nav-actions" aria-label="Navegação principal">
+        <a href="#/public">Divulgação</a>
+        <a href="#/admin">Admin</a>
+      </nav>
+    </header>
+
+    <main id="app" class="app-shell"></main>
+
+    <template id="public-template">
+      <section class="hero">
+        <div>
+          <p class="eyebrow">Ministério de Música</p>
+          <h1 data-field="title">Escala Banda MN</h1>
+          <p data-field="notice" class="hero-copy"></p>
+        </div>
+        <div class="hero-panel">
+          <span>Próximo evento</span>
+          <strong data-field="next-date">--</strong>
+          <small data-field="next-name">--</small>
+        </div>
+      </section>
+
+      <section class="toolbar">
+        <label>
+          <span>Filtrar músico</span>
+          <input id="musician-filter" type="search" placeholder="Nome do músico" />
+        </label>
+        <label>
+          <span>Evento</span>
+          <select id="event-filter"></select>
+        </label>
+      </section>
+
+      <section id="public-events" class="event-grid"></section>
+      <section id="public-members" class="band-panel"></section>
+    </template>
+
+    <template id="admin-template">
+      <section class="admin-layout">
+        <aside class="admin-sidebar">
+          <p class="eyebrow">Área administrativa</p>
+          <h1>Montar escala</h1>
+          <p>
+            Edite as datas e os músicos. Depois salve, exporte ou publique usando
+            o backend em Google Apps Script.
+          </p>
+          <div class="status-box" id="sync-status">Carregando escala...</div>
+          <button id="save-local" type="button">Salvar neste navegador</button>
+          <button id="load-backend" type="button">Carregar do backend</button>
+          <button id="save-backend" type="button">Publicar no backend</button>
+          <button id="export-json" type="button">Exportar JSON</button>
+        </aside>
+
+        <section class="admin-main">
+          <div class="form-row">
+            <label>
+              <span>Título</span>
+              <input id="schedule-title" type="text" />
+            </label>
+            <label>
+              <span>Aviso</span>
+              <input id="schedule-notice" type="text" />
+            </label>
+          </div>
+
+          <div class="form-row compact">
+            <label>
+              <span>URL do backend</span>
+              <input id="api-url" type="url" placeholder="https://script.google.com/..." />
+            </label>
+            <label>
+              <span>Chave admin</span>
+              <input id="admin-key" type="password" placeholder="Definida no Apps Script" />
+            </label>
+          </div>
+
+          <div class="section-heading">
+            <h2>Eventos</h2>
+            <button id="add-event" type="button">Adicionar evento</button>
+          </div>
+          <div id="admin-events" class="admin-events"></div>
+
+          <div class="section-heading">
+            <h2>Músicos por instrumento</h2>
+          </div>
+          <div id="admin-members" class="admin-members"></div>
+
+          <label class="notes-field">
+            <span>Observações</span>
+            <textarea id="schedule-notes" rows="5"></textarea>
+          </label>
+        </section>
+      </section>
+    </template>
+
+    <script src="./app.js" type="module"></script>
+  </body>
+</html>
