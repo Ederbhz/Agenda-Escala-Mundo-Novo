@@ -9,8 +9,12 @@
     />
     <meta name="theme-color" content="#062966" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Escala MN" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <title>Escala de Serviço - Comunidade Mundo Novo</title>
     <link rel="icon" href="./assets/logo-mundo-novo.jpg" />
+    <link rel="apple-touch-icon" href="./assets/icons/icon-180.png" />
+    <link rel="manifest" href="./manifest.webmanifest" />
     <link rel="stylesheet" href="./style.css" />
   </head>
   <body class="home-page">
@@ -27,6 +31,7 @@
       <nav class="nav-actions" aria-label="Acessos principais">
         <a href="./coordenador.html">Coordenador</a>
         <a href="./musico.html">Músico</a>
+        <a href="./instalar.html">Instalar</a>
       </nav>
     </header>
 
@@ -39,8 +44,10 @@
         <div class="home-actions">
           <a class="button primary" href="./coordenador.html">Acessar área do coordenador</a>
           <a class="button light" href="./musico.html">Consultar minha escala</a>
+          <button class="button light" type="button" data-install-app hidden>Instalar app</button>
         </div>
       </div>
     </main>
+    <script src="./pwa.js" type="module"></script>
   </body>
 </html>

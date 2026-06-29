@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="description" content="Instalar o app da escala da Comunidade Mundo Novo" />
+    <meta name="theme-color" content="#062966" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Escala MN" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <title>Instalar App - Escala Mundo Novo</title>
+    <link rel="icon" href="./assets/logo-mundo-novo.jpg" />
+    <link rel="apple-touch-icon" href="./assets/icons/icon-180.png" />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="./index.html" aria-label="Página inicial">
+        <span class="brand-mark">
+          <img src="./assets/logo-mundo-novo.jpg" alt="" />
+        </span>
+        <span>
+          <strong>Escala Mundo Novo</strong>
+          <small>Instalar no celular</small>
+        </span>
+      </a>
+      <nav class="nav-actions" aria-label="Acessos principais">
+        <a href="./coordenador.html">Coordenador</a>
+        <a href="./musico.html">Músico</a>
+      </nav>
+    </header>
+
+    <main class="app-shell install-page">
+      <section class="page-heading">
+        <div>
+          <p class="eyebrow">App instalável</p>
+          <h1>Instalar a Escala MN</h1>
+          <p class="muted">Use o mesmo link no celular ou tablet e salve o app na tela inicial.</p>
+        </div>
+        <img class="install-logo" src="./assets/logo-mundo-novo.jpg" alt="Comunidade Mundo Novo BH" />
+      </section>
+
+      <section class="install-grid">
+        <article class="install-card">
+          <h2>Android</h2>
+          <ol>
+            <li>Abra este site no Chrome.</li>
+            <li>Toque em <strong>Instalar app</strong>, se aparecer.</li>
+            <li>Se não aparecer, toque no menu do Chrome e escolha <strong>Adicionar à tela inicial</strong>.</li>
+          </ol>
+          <button class="primary" type="button" data-install-app hidden>Instalar app</button>
+        </article>
+
+        <article class="install-card">
+          <h2>iPhone ou iPad</h2>
+          <ol>
+            <li>Abra este site no Safari.</li>
+            <li>Toque no botão de compartilhar.</li>
+            <li>Escolha <strong>Adicionar à Tela de Início</strong>.</li>
+            <li>Confirme o nome <strong>Escala MN</strong>.</li>
+          </ol>
+        </article>
+      </section>
+
+      <section class="install-actions">
+        <a class="button primary" href="./coordenador.html">Abrir coordenador</a>
+        <a class="button" href="./musico.html">Abrir músico</a>
+      </section>
+    </main>
+
+    <script type="module" src="./pwa.js"></script>
+  </body>
+</html>

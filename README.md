@@ -31,6 +31,8 @@ As telas foram ajustadas para uso em celular e tablet; no coordenador, a grade l
 - `index.html`: tela inicial com acesso ao coordenador e ao músico.
 - `coordenador.html`: área administrativa com grade mensal, cadastros, pendências e histórico.
 - `musico.html`: consulta individual para confirmar ou recusar presença.
+- `instalar.html`: instruções para instalar o app no Android, iPhone ou iPad.
+- `manifest.webmanifest` e `service-worker.js`: arquivos do PWA instalável.
 - `style.css`: estilos responsivos.
 - `config.js`: URL da API, chave administrativa e senha simples da área do coordenador.
 - `app.js`: dados, regras, armazenamento local e comunicação com Google Apps Script.
@@ -38,6 +40,19 @@ As telas foram ajustadas para uso em celular e tablet; no coordenador, a grade l
 - `musico.js`: fluxo do músico.
 - `apps-script/Code.gs`: API para Google Sheets.
 - `data/seed.json`: dados iniciais de exemplo.
+
+## Instalar como app
+
+O projeto está configurado como PWA. Não precisa publicar na Play Store ou App Store:
+
+- Android: abrir o site no Chrome e tocar em `Instalar app` ou `Adicionar à tela inicial`.
+- iPhone/iPad: abrir no Safari, tocar em compartilhar e escolher `Adicionar à Tela de Início`.
+
+Link direto para orientar a comunidade:
+
+```text
+https://ederbhz.github.io/Agenda-Escala-Mundo-Novo/instalar.html
+```
 
 ## Rodar localmente
 
