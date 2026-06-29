@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Consulta e confirmação de escala para músicos da Comunidade Mundo Novo"
+    />
+    <title>Minha Escala - Comunidade Mundo Novo</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="./index.html" aria-label="Página inicial">
+        <span class="brand-mark">MN</span>
+        <span>
+          <strong>Minha Escala</strong>
+          <small>Comunidade Mundo Novo</small>
+        </span>
+      </a>
+      <nav class="nav-actions" aria-label="Acessos principais">
+        <a href="./coordenador.html">Coordenador</a>
+      </nav>
+    </header>
+
+    <main class="app-shell musician-page">
+      <section class="page-heading">
+        <div>
+          <p class="eyebrow">Consulta pública</p>
+          <h1 id="musicianTitle">Minha escala</h1>
+        </div>
+        <div id="musicianStatus" class="status-pill">Carregando...</div>
+      </section>
+
+      <section class="control-bar musician-filter">
+        <label>
+          <span>Nome</span>
+          <input id="musicianSearch" list="musicianList" type="search" autocomplete="name" placeholder="Digite ou selecione seu nome" />
+          <datalist id="musicianList"></datalist>
+        </label>
+        <label>
+          <span>Mês</span>
+          <select id="monthSelect"></select>
+        </label>
+        <label>
+          <span>Ano</span>
+          <input id="yearInput" type="number" min="2024" max="2099" />
+        </label>
+        <button id="searchButton" class="primary" type="button">Buscar escala</button>
+      </section>
+
+      <section id="assignmentsList" class="assignment-list"></section>
+    </main>
+
+    <dialog id="declineDialog" class="app-dialog">
+      <form id="declineForm">
+        <input id="declineEscalaId" type="hidden" />
+        <h2>Não poderei comparecer</h2>
+        <p id="declineInfo" class="muted"></p>
+        <label>
+          <span>Motivo ou observação</span>
+          <textarea id="declineReason" rows="4" required></textarea>
+        </label>
+        <div class="form-actions">
+          <button class="danger" type="submit">Enviar recusa</button>
+          <button id="closeDecline" type="button">Cancelar</button>
+        </div>
+      </form>
+    </dialog>
+
+    <script type="module" src="./musico.js"></script>
+  </body>
+</html>

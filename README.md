@@ -1,94 +1,110 @@
-# Escala de Música - Comunidade Mundo Novo
+# Escala de Serviço - Comunidade Mundo Novo
 
-Aplicação estática para montar e divulgar a escala dos músicos da Comunidade Mundo Novo.
+Sistema web estático para montar a escala mensal em formato parecido com a planilha atual, permitir confirmação dos músicos e registrar pendências de remanejamento.
 
-## O que já vem pronto
+## Eventos fixos do mês
 
-- Página pública para divulgação: `#/public`
-- Página administrativa para montar a escala: `#/admin`
-- Dados iniciais baseados na planilha atual de junho/2026
-- Filtro por músico e por evento
-- Edição de datas, eventos, instrumentos, integrantes e observações
-- Exportação da escala em JSON
-- Integração opcional com Google Apps Script para salvar em uma planilha
+O botão `Gerar eventos fixos` cria automaticamente a agenda recorrente:
 
-## Como publicar no GitHub Pages
+- `Noite de Louvor`: toda segunda-feira, às `19:30`.
+- `Missa Quinta-Feira`: toda quinta-feira, às `19:30`.
+- `Missa Dominical`: todos os domingos, às `08:00`.
+- `Missa Dominical`: todos os domingos, às `09:30`.
 
-1. Crie um repositório no GitHub, por exemplo `escala-mundo-novo`.
-2. Envie todos os arquivos deste projeto para o repositório.
-3. No GitHub, entre em `Settings > Pages`.
-4. Em `Build and deployment`, selecione `Deploy from a branch`.
-5. Escolha a branch `main` e a pasta `/root`.
-6. O link público ficará parecido com:
+Os horários de segunda e quinta podem ser ajustados no cadastro de eventos depois da geração.
 
-```text
-https://seu-usuario.github.io/escala-mundo-novo/#/public
+## Arquivos principais
+
+- `index.html`: tela inicial com acesso ao coordenador e ao músico.
+- `coordenador.html`: área administrativa com grade mensal, cadastros, pendências e histórico.
+- `musico.html`: consulta individual para confirmar ou recusar presença.
+- `style.css`: estilos responsivos.
+- `config.js`: URL da API, chave administrativa e senha simples da área do coordenador.
+- `app.js`: dados, regras, armazenamento local e comunicação com Google Apps Script.
+- `coordenador.js`: fluxo do coordenador.
+- `musico.js`: fluxo do músico.
+- `apps-script/Code.gs`: API para Google Sheets.
+- `data/seed.json`: dados iniciais de exemplo.
+
+## Rodar localmente
+
+Abra um terminal nesta pasta e rode:
+
+```powershell
+python -m http.server 5500
 ```
 
-O link administrativo ficará parecido com:
+Depois acesse:
 
-```text
-https://seu-usuario.github.io/escala-mundo-novo/#/admin
-```
+- `http://localhost:5500/index.html`
+- `http://localhost:5500/coordenador.html`
+- `http://localhost:5500/musico.html`
 
-Com backend configurado, use o parâmetro `api` no link de divulgação:
+A senha inicial do coordenador é `mundo-novo`. Troque em `config.js` antes de publicar.
 
-```text
-https://seu-usuario.github.io/escala-mundo-novo/?api=URL_DO_APPS_SCRIPT#/public
-```
+## Estrutura da planilha
 
-## Persistência com Google Apps Script
+O Apps Script cria e usa estas abas:
 
-Sem backend, a página administrativa salva as alterações somente no navegador de quem editou. Para publicar a escala para todos os músicos, use o Apps Script:
+- `Musicos`: `id_musico`, `nome`, `telefone`, `email`, `instrumentos`, `status`, `observacoes`
+- `FuncoesEscala`: `id_funcao`, `nome_funcao`, `tipo_funcao`, `ordem_exibicao`, `status`
+- `Eventos`: `id_evento`, `nome_evento`, `data_evento`, `dia_semana`, `horario`, `local`, `status`, `observacoes`
+- `Disponibilidade`: `id_disponibilidade`, `id_musico`, `nome_musico`, `data`, `disponibilidade`, `observacoes`
+- `Escala`: um registro por célula preenchida da grade
+- `Historico`: confirmação, recusa, remanejamento, cancelamento e alterações importantes
+- `Configuracoes`: título, local e horário padrão
 
-1. Abra a planilha no Google Sheets.
-2. Vá em `Extensões > Apps Script`.
+## Configurar Google Apps Script
+
+1. Crie ou abra a planilha no Google Sheets.
+2. Acesse `Extensões > Apps Script`.
 3. Cole o conteúdo de `apps-script/Code.gs`.
-4. Troque o valor de `ADMIN_KEY` por uma chave forte.
-5. Clique em `Implantar > Nova implantação`.
-6. Escolha o tipo `Aplicativo da Web`.
-7. Em `Executar como`, selecione você.
-8. Em `Quem pode acessar`, selecione qualquer pessoa com o link.
-9. Copie a URL da implantação.
-10. Abra `#/admin`, informe a URL do backend e a chave administrativa.
-11. Clique em `Publicar no backend`.
+4. Troque `ADMIN_KEY = 'troque-esta-chave'` por uma chave forte.
+5. Salve o projeto.
+6. Rode manualmente a função `setupPlanilhaInicial` uma vez para criar as abas com exemplos.
+7. Clique em `Implantar > Nova implantação`.
+8. Escolha `Aplicativo da Web`.
+9. Em `Executar como`, selecione você.
+10. Em `Quem pode acessar`, selecione qualquer pessoa com o link.
+11. Copie a URL do Web App.
 
-Depois disso, a escala publicada pode ser carregada por qualquer pessoa pela página pública.
+## Conectar o site à planilha
 
-## Estrutura dos dados
+Opção 1: edite `config.js`:
 
-A escala fica em JSON com esta forma:
-
-```json
-{
-  "title": "Escala Banda MN - Junho de 2026",
-  "notice": "A escala poderá sofrer alterações no decorrer do mês.",
-  "instruments": ["Baixo", "Batera", "Violão", "Guitarra", "Teclado"],
-  "events": [
-    {
-      "id": "domingo-2026-06-14",
-      "name": "Domingo",
-      "date": "2026-06-14",
-      "assignments": {
-        "Baixo": "Eder",
-        "Batera": "Igor",
-        "Violão": "Junio",
-        "Guitarra": "",
-        "Teclado": "Emerson"
-      }
-    }
-  ],
-  "members": {
-    "Baixo": ["Eder", "Daniel"]
-  },
-  "notes": "Observações de disponibilidade"
-}
+```js
+API_URL: "https://script.google.com/macros/s/SEU_ID/exec",
+ADMIN_KEY: "sua-chave",
 ```
 
-## Próximas melhorias sugeridas
+Opção 2: abra `coordenador.html`, expanda `Configuração da API`, cole a URL e a chave, e clique em `Guardar configuração`.
 
-- Login real para administradores
-- Histórico de alterações
-- Geração automática de escala respeitando indisponibilidades
-- Confirmação do músico por WhatsApp
-- Importação direta da planilha atual
+## Publicar no GitHub Pages
+
+1. Crie um repositório, por exemplo `escala-mundo-novo`.
+2. Envie todos os arquivos deste projeto para a branch `main`.
+3. No GitHub, acesse `Settings > Pages`.
+4. Em `Build and deployment`, selecione `GitHub Actions`.
+5. O workflow `.github/workflows/pages.yml` publicará o site automaticamente.
+6. O site ficará em um endereço parecido com:
+
+```text
+https://seu-usuario.github.io/escala-mundo-novo/
+```
+
+## Fluxo de uso
+
+1. O coordenador entra em `coordenador.html`.
+2. Seleciona mês e ano.
+3. Clica em `Gerar eventos fixos` para criar Noite de Louvor, Missa Quinta-Feira e as duas Missas Dominicais.
+4. Preenche a grade escolhendo músicos por função.
+5. Clica em `Salvar alterações`.
+6. O músico entra em `musico.html`, busca seu nome e confirma ou recusa.
+7. Recusas aparecem em `Pendências`, onde o coordenador remaneja e o histórico é registrado.
+
+## Checklist antes de publicar
+
+- Troque a senha `DEFAULT_ADMIN_PASSWORD` em `config.js`.
+- Troque `ADMIN_KEY` em `config.js` e em `apps-script/Code.gs`.
+- Publique o Apps Script como Web App e cole a URL em `config.js` ou na tela do coordenador.
+- Depois de subir no GitHub Pages, teste os links `coordenador.html` e `musico.html` em uma aba anônima ou em outro dispositivo.

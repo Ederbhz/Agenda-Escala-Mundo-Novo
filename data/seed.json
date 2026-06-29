@@ -1,171 +1,686 @@
 {
-  "title": "Escala Banda MN - Junho de 2026",
-  "notice": "A escala poderá sofrer alterações no decorrer do mês.",
-  "notes": "DANIEL: segundo domingo de cada mês.\nEMERSON: não pode no quarto domingo.",
-  "instruments": ["Baixo", "Batera", "Violão", "Guitarra", "Teclado"],
-  "events": [
+  "meta": {
+    "communityName": "Comunidade Mundo Novo",
+    "titlePrefix": "ESCALA DE SERVIÇO",
+    "notice": "A escala poderá sofrer alterações durante o mês.",
+    "defaultLocation": "Comunidade Mundo Novo",
+    "defaultTime": "19:30"
+  },
+  "musicos": [
     {
-      "id": "segunda-2026-06-01",
-      "name": "Segunda-feira",
-      "date": "2026-06-01",
-      "assignments": {
-        "Baixo": "Josmar",
-        "Batera": "Viana",
-        "Violão": "",
-        "Guitarra": "Guto",
-        "Teclado": "Luiz Fernando"
-      }
+      "id_musico": "mus-maria",
+      "nome": "Maria",
+      "telefone": "(00) 90000-0001",
+      "email": "maria@email.com",
+      "instrumentos": [
+        "Teclado",
+        "Voz",
+        "Adoração"
+      ],
+      "status": "Ativo",
+      "observacoes": ""
     },
     {
-      "id": "segunda-2026-06-08",
-      "name": "Segunda-feira",
-      "date": "2026-06-08",
-      "assignments": {
-        "Baixo": "Eder",
-        "Batera": "Bim",
-        "Violão": "",
-        "Guitarra": "Lucas",
-        "Teclado": "Luiz Fernando"
-      }
+      "id_musico": "mus-joao",
+      "nome": "João",
+      "telefone": "(00) 90000-0002",
+      "email": "joao@email.com",
+      "instrumentos": [
+        "Violão",
+        "Voz",
+        "Cenáculo"
+      ],
+      "status": "Ativo",
+      "observacoes": ""
     },
     {
-      "id": "segunda-2026-06-15",
-      "name": "Segunda-feira",
-      "date": "2026-06-15",
-      "assignments": {
-        "Baixo": "Rodrigo",
-        "Batera": "Viana",
-        "Violão": "",
-        "Guitarra": "Guto",
-        "Teclado": "Luiz Fernando"
-      }
+      "id_musico": "mus-pedro",
+      "nome": "Pedro",
+      "telefone": "(00) 90000-0003",
+      "email": "pedro@email.com",
+      "instrumentos": [
+        "Contra Baixo",
+        "Baixo"
+      ],
+      "status": "Ativo",
+      "observacoes": ""
     },
     {
-      "id": "segunda-2026-06-22",
-      "name": "Segunda-feira",
-      "date": "2026-06-22",
-      "assignments": {
-        "Baixo": "Gustavo",
-        "Batera": "Bim",
-        "Violão": "",
-        "Guitarra": "Anderson",
-        "Teclado": "Luiz Fernando"
-      }
+      "id_musico": "mus-ana",
+      "nome": "Ana",
+      "telefone": "(00) 90000-0004",
+      "email": "ana@email.com",
+      "instrumentos": [
+        "Bateria",
+        "Percussão"
+      ],
+      "status": "Ativo",
+      "observacoes": ""
     },
     {
-      "id": "segunda-2026-06-29",
-      "name": "Segunda-feira",
-      "date": "2026-06-29",
-      "assignments": {
-        "Baixo": "Michael",
-        "Batera": "Viana",
-        "Violão": "",
-        "Guitarra": "Lucas",
-        "Teclado": "Luiz Fernando"
-      }
+      "id_musico": "mus-carlos",
+      "nome": "Carlos",
+      "telefone": "(00) 90000-0005",
+      "email": "carlos@email.com",
+      "instrumentos": [
+        "Violão",
+        "Guitarra"
+      ],
+      "status": "Ativo",
+      "observacoes": ""
     },
     {
-      "id": "quinta-2026-06-04",
-      "name": "Quinta-feira",
-      "date": "2026-06-04",
-      "assignments": {
-        "Baixo": "Iago",
-        "Batera": "Pedrinho",
-        "Violão": "Guto",
-        "Guitarra": "Roni",
-        "Teclado": "Luiz Gustavo"
-      }
+      "id_musico": "mus-fernanda",
+      "nome": "Fernanda",
+      "telefone": "(00) 90000-0006",
+      "email": "fernanda@email.com",
+      "instrumentos": [
+        "Voz",
+        "Vocal"
+      ],
+      "status": "Ativo",
+      "observacoes": ""
     },
     {
-      "id": "quinta-2026-06-11",
-      "name": "Quinta-feira",
-      "date": "2026-06-11",
-      "assignments": {
-        "Baixo": "Iago",
-        "Batera": "Bim",
-        "Violão": "Euler",
-        "Guitarra": "Anderson",
-        "Teclado": "Luiz Gustavo"
-      }
+      "id_musico": "mus-luisa",
+      "nome": "Luísa",
+      "telefone": "(00) 90000-0007",
+      "email": "luisa@email.com",
+      "instrumentos": [
+        "Voz",
+        "Vocal"
+      ],
+      "status": "Ativo",
+      "observacoes": ""
     },
     {
-      "id": "quinta-2026-06-18",
-      "name": "Quinta-feira",
-      "date": "2026-06-18",
-      "assignments": {
-        "Baixo": "Iago",
-        "Batera": "Pedrinho",
-        "Violão": "Guto",
-        "Guitarra": "",
-        "Teclado": ""
-      }
+      "id_musico": "mus-marcia",
+      "nome": "Márcia",
+      "telefone": "(00) 90000-0008",
+      "email": "marcia@email.com",
+      "instrumentos": [
+        "Liturgia",
+        "Intenções"
+      ],
+      "status": "Ativo",
+      "observacoes": ""
     },
     {
-      "id": "quinta-2026-06-25",
-      "name": "Quinta-feira",
-      "date": "2026-06-25",
-      "assignments": {
-        "Baixo": "Iago",
-        "Batera": "Bim",
-        "Violão": "Junio",
-        "Guitarra": "",
-        "Teclado": ""
-      }
+      "id_musico": "mus-rafael",
+      "nome": "Rafael",
+      "telefone": "(00) 90000-0009",
+      "email": "rafael@email.com",
+      "instrumentos": [
+        "Social",
+        "Divina Vontade"
+      ],
+      "status": "Ativo",
+      "observacoes": ""
     },
     {
-      "id": "domingo-2026-06-07",
-      "name": "Domingo",
-      "date": "2026-06-07",
-      "assignments": {
-        "Baixo": "Josmar",
-        "Batera": "Lorrane",
-        "Violão": "Diego",
-        "Guitarra": "",
-        "Teclado": "Paulinho"
-      }
+      "id_musico": "mus-eder",
+      "nome": "Eder",
+      "telefone": "(00) 90000-0010",
+      "email": "eder@email.com",
+      "instrumentos": [
+        "Contra Baixo",
+        "Violão"
+      ],
+      "status": "Ativo",
+      "observacoes": ""
     },
     {
-      "id": "domingo-2026-06-14",
-      "name": "Domingo",
-      "date": "2026-06-14",
-      "assignments": {
-        "Baixo": "Eder",
-        "Batera": "Igor",
-        "Violão": "Junio",
-        "Guitarra": "",
-        "Teclado": "Emerson"
-      }
+      "id_musico": "mus-luiz",
+      "nome": "Luiz Gustavo",
+      "telefone": "(00) 90000-0011",
+      "email": "luiz@email.com",
+      "instrumentos": [
+        "Teclado"
+      ],
+      "status": "Ativo",
+      "observacoes": ""
     },
     {
-      "id": "domingo-2026-06-21",
-      "name": "Domingo",
-      "date": "2026-06-21",
-      "assignments": {
-        "Baixo": "Bruno",
-        "Batera": "Fred",
-        "Violão": "Daniel",
-        "Guitarra": "",
-        "Teclado": "Luiz Gustavo"
-      }
-    },
-    {
-      "id": "domingo-2026-06-28",
-      "name": "Domingo",
-      "date": "2026-06-28",
-      "assignments": {
-        "Baixo": "Josmar",
-        "Batera": "Lorrane",
-        "Violão": "Junio",
-        "Guitarra": "",
-        "Teclado": "Max"
-      }
+      "id_musico": "mus-lorrane",
+      "nome": "Lorrane",
+      "telefone": "(00) 90000-0012",
+      "email": "lorrane@email.com",
+      "instrumentos": [
+        "Bateria",
+        "Voz"
+      ],
+      "status": "Ativo",
+      "observacoes": ""
     }
   ],
-  "members": {
-    "Baixo": ["Eder", "Daniel", "Bruno", "Michael", "Iago", "Rodrigo", "Josmar", "Gustavo"],
-    "Guitarra": ["Guto", "Lucas", "Magal", "Roni", "Anderson"],
-    "Violão": ["Guto", "Lucas", "Junio", "Nilton", "Anderson", "Roni", "Euler"],
-    "Batera": ["Bim", "Lorrane", "Igor", "Viana", "Pedrinho", "Fred"],
-    "Teclado": ["Luiz", "Emerson", "Euler", "Max", "Gleison", "Luiz Gustavo", "Paulinho"]
-  }
+  "funcoes": [
+    {
+      "id_funcao": "func-adoracao",
+      "nome_funcao": "Adoração",
+      "tipo_funcao": "Serviço",
+      "ordem_exibicao": 1,
+      "status": "Ativo"
+    },
+    {
+      "id_funcao": "func-cenaculo",
+      "nome_funcao": "Cenáculo",
+      "tipo_funcao": "Serviço",
+      "ordem_exibicao": 2,
+      "status": "Ativo"
+    },
+    {
+      "id_funcao": "func-teclado",
+      "nome_funcao": "Teclado",
+      "tipo_funcao": "Instrumento",
+      "ordem_exibicao": 3,
+      "status": "Ativo"
+    },
+    {
+      "id_funcao": "func-violao",
+      "nome_funcao": "Violão",
+      "tipo_funcao": "Instrumento",
+      "ordem_exibicao": 4,
+      "status": "Ativo"
+    },
+    {
+      "id_funcao": "func-contra-baixo",
+      "nome_funcao": "Contra Baixo",
+      "tipo_funcao": "Instrumento",
+      "ordem_exibicao": 5,
+      "status": "Ativo"
+    },
+    {
+      "id_funcao": "func-guitarra",
+      "nome_funcao": "Guitarra",
+      "tipo_funcao": "Instrumento",
+      "ordem_exibicao": 6,
+      "status": "Ativo"
+    },
+    {
+      "id_funcao": "func-percussao",
+      "nome_funcao": "Percussão",
+      "tipo_funcao": "Instrumento",
+      "ordem_exibicao": 7,
+      "status": "Ativo"
+    },
+    {
+      "id_funcao": "func-bateria",
+      "nome_funcao": "Bateria",
+      "tipo_funcao": "Instrumento",
+      "ordem_exibicao": 8,
+      "status": "Ativo"
+    },
+    {
+      "id_funcao": "func-voz-1",
+      "nome_funcao": "Voz 1",
+      "tipo_funcao": "Vocal",
+      "ordem_exibicao": 9,
+      "status": "Ativo"
+    },
+    {
+      "id_funcao": "func-voz-2",
+      "nome_funcao": "Voz 2",
+      "tipo_funcao": "Vocal",
+      "ordem_exibicao": 10,
+      "status": "Ativo"
+    },
+    {
+      "id_funcao": "func-voz-3",
+      "nome_funcao": "Voz 3",
+      "tipo_funcao": "Vocal",
+      "ordem_exibicao": 11,
+      "status": "Ativo"
+    },
+    {
+      "id_funcao": "func-intencoes",
+      "nome_funcao": "Intenções",
+      "tipo_funcao": "Serviço",
+      "ordem_exibicao": 12,
+      "status": "Ativo"
+    },
+    {
+      "id_funcao": "func-divina-vontade",
+      "nome_funcao": "Divina Vontade",
+      "tipo_funcao": "Serviço",
+      "ordem_exibicao": 13,
+      "status": "Ativo"
+    },
+    {
+      "id_funcao": "func-liturgia",
+      "nome_funcao": "Liturgia",
+      "tipo_funcao": "Serviço",
+      "ordem_exibicao": 14,
+      "status": "Ativo"
+    },
+    {
+      "id_funcao": "func-social",
+      "nome_funcao": "Social",
+      "tipo_funcao": "Serviço",
+      "ordem_exibicao": 15,
+      "status": "Ativo"
+    }
+  ],
+  "eventos": [
+    {
+      "id_evento": "ev-2026-07-02-missa-quinta",
+      "nome_evento": "Missa Quinta-Feira",
+      "data_evento": "2026-07-02",
+      "dia_semana": "Quinta-feira",
+      "horario": "19:30",
+      "local": "Comunidade Mundo Novo",
+      "status": "Ativo",
+      "observacoes": ""
+    },
+    {
+      "id_evento": "ev-2026-07-05-missa-dominical-0800",
+      "nome_evento": "Missa Dominical",
+      "data_evento": "2026-07-05",
+      "dia_semana": "Domingo",
+      "horario": "08:00",
+      "local": "Comunidade Mundo Novo",
+      "status": "Ativo",
+      "observacoes": ""
+    },
+    {
+      "id_evento": "ev-2026-07-05-missa-dominical-0930",
+      "nome_evento": "Missa Dominical",
+      "data_evento": "2026-07-05",
+      "dia_semana": "Domingo",
+      "horario": "09:30",
+      "local": "Comunidade Mundo Novo",
+      "status": "Ativo",
+      "observacoes": ""
+    },
+    {
+      "id_evento": "ev-2026-07-06-noite-louvor",
+      "nome_evento": "Noite de Louvor",
+      "data_evento": "2026-07-06",
+      "dia_semana": "Segunda-feira",
+      "horario": "19:30",
+      "local": "Comunidade Mundo Novo",
+      "status": "Ativo",
+      "observacoes": ""
+    },
+    {
+      "id_evento": "ev-2026-07-09-missa-quinta",
+      "nome_evento": "Missa Quinta-Feira",
+      "data_evento": "2026-07-09",
+      "dia_semana": "Quinta-feira",
+      "horario": "19:30",
+      "local": "Comunidade Mundo Novo",
+      "status": "Ativo",
+      "observacoes": ""
+    },
+    {
+      "id_evento": "ev-2026-07-12-missa-dominical-0800",
+      "nome_evento": "Missa Dominical",
+      "data_evento": "2026-07-12",
+      "dia_semana": "Domingo",
+      "horario": "08:00",
+      "local": "Comunidade Mundo Novo",
+      "status": "Ativo",
+      "observacoes": ""
+    },
+    {
+      "id_evento": "ev-2026-07-12-missa-dominical-0930",
+      "nome_evento": "Missa Dominical",
+      "data_evento": "2026-07-12",
+      "dia_semana": "Domingo",
+      "horario": "09:30",
+      "local": "Comunidade Mundo Novo",
+      "status": "Ativo",
+      "observacoes": ""
+    },
+    {
+      "id_evento": "ev-2026-07-13-noite-louvor",
+      "nome_evento": "Noite de Louvor",
+      "data_evento": "2026-07-13",
+      "dia_semana": "Segunda-feira",
+      "horario": "19:30",
+      "local": "Comunidade Mundo Novo",
+      "status": "Ativo",
+      "observacoes": ""
+    },
+    {
+      "id_evento": "ev-2026-07-16-missa-quinta",
+      "nome_evento": "Missa Quinta-Feira",
+      "data_evento": "2026-07-16",
+      "dia_semana": "Quinta-feira",
+      "horario": "19:30",
+      "local": "Comunidade Mundo Novo",
+      "status": "Ativo",
+      "observacoes": ""
+    },
+    {
+      "id_evento": "ev-2026-07-19-missa-dominical-0800",
+      "nome_evento": "Missa Dominical",
+      "data_evento": "2026-07-19",
+      "dia_semana": "Domingo",
+      "horario": "08:00",
+      "local": "Comunidade Mundo Novo",
+      "status": "Ativo",
+      "observacoes": ""
+    },
+    {
+      "id_evento": "ev-2026-07-19-missa-dominical-0930",
+      "nome_evento": "Missa Dominical",
+      "data_evento": "2026-07-19",
+      "dia_semana": "Domingo",
+      "horario": "09:30",
+      "local": "Comunidade Mundo Novo",
+      "status": "Ativo",
+      "observacoes": ""
+    },
+    {
+      "id_evento": "ev-2026-07-20-noite-louvor",
+      "nome_evento": "Noite de Louvor",
+      "data_evento": "2026-07-20",
+      "dia_semana": "Segunda-feira",
+      "horario": "19:30",
+      "local": "Comunidade Mundo Novo",
+      "status": "Ativo",
+      "observacoes": ""
+    },
+    {
+      "id_evento": "ev-2026-07-23-missa-quinta",
+      "nome_evento": "Missa Quinta-Feira",
+      "data_evento": "2026-07-23",
+      "dia_semana": "Quinta-feira",
+      "horario": "19:30",
+      "local": "Comunidade Mundo Novo",
+      "status": "Ativo",
+      "observacoes": ""
+    },
+    {
+      "id_evento": "ev-2026-07-26-missa-dominical-0800",
+      "nome_evento": "Missa Dominical",
+      "data_evento": "2026-07-26",
+      "dia_semana": "Domingo",
+      "horario": "08:00",
+      "local": "Comunidade Mundo Novo",
+      "status": "Ativo",
+      "observacoes": ""
+    },
+    {
+      "id_evento": "ev-2026-07-26-missa-dominical-0930",
+      "nome_evento": "Missa Dominical",
+      "data_evento": "2026-07-26",
+      "dia_semana": "Domingo",
+      "horario": "09:30",
+      "local": "Comunidade Mundo Novo",
+      "status": "Ativo",
+      "observacoes": ""
+    },
+    {
+      "id_evento": "ev-2026-07-27-noite-louvor",
+      "nome_evento": "Noite de Louvor",
+      "data_evento": "2026-07-27",
+      "dia_semana": "Segunda-feira",
+      "horario": "19:30",
+      "local": "Comunidade Mundo Novo",
+      "status": "Ativo",
+      "observacoes": ""
+    },
+    {
+      "id_evento": "ev-2026-07-30-missa-quinta",
+      "nome_evento": "Missa Quinta-Feira",
+      "data_evento": "2026-07-30",
+      "dia_semana": "Quinta-feira",
+      "horario": "19:30",
+      "local": "Comunidade Mundo Novo",
+      "status": "Ativo",
+      "observacoes": ""
+    }
+  ],
+  "disponibilidade": [
+    {
+      "id_disponibilidade": "disp-1",
+      "id_musico": "mus-pedro",
+      "nome_musico": "Pedro",
+      "data": "2026-07-12",
+      "disponibilidade": "Indisponível",
+      "observacoes": "Viagem"
+    },
+    {
+      "id_disponibilidade": "disp-2",
+      "id_musico": "mus-maria",
+      "nome_musico": "Maria",
+      "data": "2026-07-19",
+      "disponibilidade": "Talvez",
+      "observacoes": "Confirmar no começo da semana"
+    }
+  ],
+  "escala": [
+    {
+      "id_escala": "esc-1",
+      "id_evento": "ev-2026-07-05-missa-dominical-0800",
+      "data_evento": "2026-07-05",
+      "nome_evento": "Missa Dominical",
+      "horario": "08:00",
+      "id_funcao": "func-adoracao",
+      "funcao": "Adoração",
+      "tipo_funcao": "Serviço",
+      "id_musico": "mus-maria",
+      "nome_musico": "Maria",
+      "status_confirmacao": "Aguardando confirmação",
+      "data_confirmacao": "",
+      "observacao_musico": "",
+      "status_pendencia": "",
+      "substitui_id": "",
+      "criado_em": "2026-06-29T09:00:00"
+    },
+    {
+      "id_escala": "esc-2",
+      "id_evento": "ev-2026-07-05-missa-dominical-0800",
+      "data_evento": "2026-07-05",
+      "nome_evento": "Missa Dominical",
+      "horario": "08:00",
+      "id_funcao": "func-cenaculo",
+      "funcao": "Cenáculo",
+      "tipo_funcao": "Serviço",
+      "id_musico": "mus-joao",
+      "nome_musico": "João",
+      "status_confirmacao": "Aguardando confirmação",
+      "data_confirmacao": "",
+      "observacao_musico": "",
+      "status_pendencia": "",
+      "substitui_id": "",
+      "criado_em": "2026-06-29T09:00:00"
+    },
+    {
+      "id_escala": "esc-3",
+      "id_evento": "ev-2026-07-05-missa-dominical-0800",
+      "data_evento": "2026-07-05",
+      "nome_evento": "Missa Dominical",
+      "horario": "08:00",
+      "id_funcao": "func-teclado",
+      "funcao": "Teclado",
+      "tipo_funcao": "Instrumento",
+      "id_musico": "mus-luiz",
+      "nome_musico": "Luiz Gustavo",
+      "status_confirmacao": "Aguardando confirmação",
+      "data_confirmacao": "",
+      "observacao_musico": "",
+      "status_pendencia": "",
+      "substitui_id": "",
+      "criado_em": "2026-06-29T09:00:00"
+    },
+    {
+      "id_escala": "esc-4",
+      "id_evento": "ev-2026-07-05-missa-dominical-0800",
+      "data_evento": "2026-07-05",
+      "nome_evento": "Missa Dominical",
+      "horario": "08:00",
+      "id_funcao": "func-violao",
+      "funcao": "Violão",
+      "tipo_funcao": "Instrumento",
+      "id_musico": "mus-carlos",
+      "nome_musico": "Carlos",
+      "status_confirmacao": "Aguardando confirmação",
+      "data_confirmacao": "",
+      "observacao_musico": "",
+      "status_pendencia": "",
+      "substitui_id": "",
+      "criado_em": "2026-06-29T09:00:00"
+    },
+    {
+      "id_escala": "esc-5",
+      "id_evento": "ev-2026-07-05-missa-dominical-0800",
+      "data_evento": "2026-07-05",
+      "nome_evento": "Missa Dominical",
+      "horario": "08:00",
+      "id_funcao": "func-contra-baixo",
+      "funcao": "Contra Baixo",
+      "tipo_funcao": "Instrumento",
+      "id_musico": "mus-pedro",
+      "nome_musico": "Pedro",
+      "status_confirmacao": "Aguardando confirmação",
+      "data_confirmacao": "",
+      "observacao_musico": "",
+      "status_pendencia": "",
+      "substitui_id": "",
+      "criado_em": "2026-06-29T09:00:00"
+    },
+    {
+      "id_escala": "esc-6",
+      "id_evento": "ev-2026-07-05-missa-dominical-0800",
+      "data_evento": "2026-07-05",
+      "nome_evento": "Missa Dominical",
+      "horario": "08:00",
+      "id_funcao": "func-bateria",
+      "funcao": "Bateria",
+      "tipo_funcao": "Instrumento",
+      "id_musico": "mus-ana",
+      "nome_musico": "Ana",
+      "status_confirmacao": "Aguardando confirmação",
+      "data_confirmacao": "",
+      "observacao_musico": "",
+      "status_pendencia": "",
+      "substitui_id": "",
+      "criado_em": "2026-06-29T09:00:00"
+    },
+    {
+      "id_escala": "esc-7",
+      "id_evento": "ev-2026-07-05-missa-dominical-0800",
+      "data_evento": "2026-07-05",
+      "nome_evento": "Missa Dominical",
+      "horario": "08:00",
+      "id_funcao": "func-voz-1",
+      "funcao": "Voz 1",
+      "tipo_funcao": "Vocal",
+      "id_musico": "mus-fernanda",
+      "nome_musico": "Fernanda",
+      "status_confirmacao": "Aguardando confirmação",
+      "data_confirmacao": "",
+      "observacao_musico": "",
+      "status_pendencia": "",
+      "substitui_id": "",
+      "criado_em": "2026-06-29T09:00:00"
+    },
+    {
+      "id_escala": "esc-8",
+      "id_evento": "ev-2026-07-05-missa-dominical-0800",
+      "data_evento": "2026-07-05",
+      "nome_evento": "Missa Dominical",
+      "horario": "08:00",
+      "id_funcao": "func-voz-2",
+      "funcao": "Voz 2",
+      "tipo_funcao": "Vocal",
+      "id_musico": "mus-luisa",
+      "nome_musico": "Luísa",
+      "status_confirmacao": "Aguardando confirmação",
+      "data_confirmacao": "",
+      "observacao_musico": "",
+      "status_pendencia": "",
+      "substitui_id": "",
+      "criado_em": "2026-06-29T09:00:00"
+    },
+    {
+      "id_escala": "esc-9",
+      "id_evento": "ev-2026-07-05-missa-dominical-0800",
+      "data_evento": "2026-07-05",
+      "nome_evento": "Missa Dominical",
+      "horario": "08:00",
+      "id_funcao": "func-liturgia",
+      "funcao": "Liturgia",
+      "tipo_funcao": "Serviço",
+      "id_musico": "mus-marcia",
+      "nome_musico": "Márcia",
+      "status_confirmacao": "Aguardando confirmação",
+      "data_confirmacao": "",
+      "observacao_musico": "",
+      "status_pendencia": "",
+      "substitui_id": "",
+      "criado_em": "2026-06-29T09:00:00"
+    },
+    {
+      "id_escala": "esc-10",
+      "id_evento": "ev-2026-07-05-missa-dominical-0800",
+      "data_evento": "2026-07-05",
+      "nome_evento": "Missa Dominical",
+      "horario": "08:00",
+      "id_funcao": "func-social",
+      "funcao": "Social",
+      "tipo_funcao": "Serviço",
+      "id_musico": "mus-rafael",
+      "nome_musico": "Rafael",
+      "status_confirmacao": "Aguardando confirmação",
+      "data_confirmacao": "",
+      "observacao_musico": "",
+      "status_pendencia": "",
+      "substitui_id": "",
+      "criado_em": "2026-06-29T09:00:00"
+    },
+    {
+      "id_escala": "esc-11",
+      "id_evento": "ev-2026-07-12-missa-dominical-0930",
+      "data_evento": "2026-07-12",
+      "nome_evento": "Missa Dominical",
+      "horario": "09:30",
+      "id_funcao": "func-contra-baixo",
+      "funcao": "Contra Baixo",
+      "tipo_funcao": "Instrumento",
+      "id_musico": "mus-pedro",
+      "nome_musico": "Pedro",
+      "status_confirmacao": "Não poderá comparecer",
+      "data_confirmacao": "",
+      "observacao_musico": "Viagem em família",
+      "status_pendencia": "Pendente de remanejamento",
+      "substitui_id": "",
+      "criado_em": "2026-06-29T09:00:00"
+    },
+    {
+      "id_escala": "esc-12",
+      "id_evento": "ev-2026-07-19-missa-dominical-0800",
+      "data_evento": "2026-07-19",
+      "nome_evento": "Missa Dominical",
+      "horario": "08:00",
+      "id_funcao": "func-violao",
+      "funcao": "Violão",
+      "tipo_funcao": "Instrumento",
+      "id_musico": "mus-joao",
+      "nome_musico": "João",
+      "status_confirmacao": "Confirmado",
+      "data_confirmacao": "2026-06-29T09:00:00",
+      "observacao_musico": "",
+      "status_pendencia": "",
+      "substitui_id": "",
+      "criado_em": "2026-06-29T09:00:00"
+    }
+  ],
+  "historico": [
+    {
+      "id_historico": "hist-1",
+      "data_hora": "2026-06-29T09:00:00",
+      "tipo_alteracao": "Criação de escala",
+      "id_evento": "ev-2026-07-05",
+      "nome_evento": "Celebração Dominical",
+      "data_evento": "2026-07-05",
+      "funcao": "Teclado",
+      "musico_anterior": "",
+      "musico_novo": "Luiz Gustavo",
+      "usuario_responsavel": "Sistema",
+      "observacao": "Dados iniciais de exemplo"
+    }
+  ]
 }
