@@ -1,6 +1,7 @@
 const ADMIN_KEY = 'troque-esta-chave';
 
 const SHEETS = {
+  Coordenadores: ['id_coordenador', 'nome', 'telefone', 'email', 'status', 'observacoes'],
   Musicos: ['id_musico', 'nome', 'telefone', 'email', 'instrumentos', 'status', 'observacoes'],
   FuncoesEscala: ['id_funcao', 'nome_funcao', 'tipo_funcao', 'ordem_exibicao', 'status'],
   Eventos: ['id_evento', 'nome_evento', 'data_evento', 'dia_semana', 'horario', 'local', 'status', 'observacoes'],
@@ -195,6 +196,7 @@ function setupPlanilhaInicial() {
 function getDatabase_() {
   const database = {
     meta: readMeta_(),
+    coordenadores: readSheet_('Coordenadores'),
     musicos: readSheet_('Musicos'),
     funcoes: readSheet_('FuncoesEscala'),
     eventos: readSheet_('Eventos'),
@@ -219,6 +221,7 @@ function getDatabase_() {
 function writeDatabase_(database) {
   const normalized = normalizeDatabase_(database);
   writeMeta_(normalized.meta);
+  writeSheet_('Coordenadores', normalized.coordenadores);
   writeSheet_('Musicos', normalized.musicos);
   writeSheet_('FuncoesEscala', normalized.funcoes);
   writeSheet_('Eventos', normalized.eventos);
@@ -299,6 +302,7 @@ function normalizeDatabase_(database) {
   const sample = sampleDatabase_();
   return {
     meta: Object.assign(sample.meta, database.meta || {}),
+    coordenadores: Array.isArray(database.coordenadores) ? database.coordenadores : sample.coordenadores,
     musicos: Array.isArray(database.musicos) ? database.musicos : [],
     funcoes: Array.isArray(database.funcoes) ? database.funcoes : [],
     eventos: Array.isArray(database.eventos) ? database.eventos : [],
@@ -426,6 +430,10 @@ function sampleDatabase_() {
       defaultLocation: 'Comunidade Mundo Novo',
       defaultTime: '19:30'
     },
+    coordenadores: [
+      { id_coordenador: 'coord-eder', nome: 'Eder', telefone: '', email: '', status: 'Ativo', observacoes: 'Coordenação geral' },
+      { id_coordenador: 'coord-ministerio-musica', nome: 'Coordenação Ministério de Música', telefone: '', email: '', status: 'Ativo', observacoes: '' }
+    ],
     musicos: [
       { id_musico: 'mus-maria', nome: 'Maria', telefone: '(00) 90000-0001', email: 'maria@email.com', instrumentos: ['Teclado', 'Voz', 'Adoração'], status: 'Ativo', observacoes: '' },
       { id_musico: 'mus-joao', nome: 'João', telefone: '(00) 90000-0002', email: 'joao@email.com', instrumentos: ['Violão', 'Voz', 'Cenáculo'], status: 'Ativo', observacoes: '' },

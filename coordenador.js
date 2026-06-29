@@ -14,6 +14,7 @@ import {
   formatDateTimeBR,
   formatDateWithWeekday,
   formatMonthYear,
+  getActiveCoordinators,
   getActiveFunctions,
   getActiveMusicians,
   getAdminKey,
@@ -27,6 +28,7 @@ import {
   loadDatabase,
   makeId,
   normalizeDatabase,
+  parseISODate,
   remanejarAssignment,
   remanejarLocalAssignment,
   saveClientConfig,
@@ -34,6 +36,7 @@ import {
   saveRemoteDatabase,
   statusClass,
   todayISO,
+  toISODate,
   tryLoadRemoteDatabase,
   upsertAssignment,
   weekdayName,
@@ -44,6 +47,8 @@ let activeTab = "escala";
 const initialDate = defaultMonthYear();
 let selectedMonth = initialDate.month;
 let selectedYear = initialDate.year;
+let selectedWeekKey = "";
+const COORDINATOR_STORAGE_KEY = "mn-selected-coordinator-id";
 
 const $ = (id) => document.getElementById(id);
 
@@ -90,11 +95,11 @@ function setupStaticOptions() {
   )).join("");
   $("monthSelect").value = String(selectedMonth);
   $("yearInput").value = String(selectedYear);
-  $("coordinatorName").value = localStorage.getItem("mn-coordinator-name") || APP_CONFIG.DEFAULT_COORDINATOR_NAME;
 
   $("functionType").innerHTML = FUNCTION_TYPES.map((type) => `<option>${type}</option>`).join("");
   $("functionStatus").innerHTML = ACTIVE_STATUS.map((status) => `<option>${status}</option>`).join("");
   $("musicianStatus").innerHTML = ACTIVE_STATUS.map((status) => `<option>${status}</option>`).join("");
+  $("coordinatorStatus").innerHTML = ACTIVE_STATUS.map((status) => `<option>${status}</option>`).join("");
   $("availabilityStatus").innerHTML = AVAILABILITY.map((status) => `<option>${status}</option>`).join("");
 }
 
@@ -107,16 +112,18 @@ function setupConfigFields() {
 function bindEvents() {
   $("monthSelect").addEventListener("change", () => {
     selectedMonth = Number($("monthSelect").value);
+    selectedWeekKey = "";
     renderAll();
   });
 
   $("yearInput").addEventListener("change", () => {
     selectedYear = Number($("yearInput").value);
+    selectedWeekKey = "";
     renderAll();
   });
 
-  $("coordinatorName").addEventListener("input", () => {
-    localStorage.setItem("mn-coordinator-name", coordinatorName());
+  $("coordinatorSelect").addEventListener("change", () => {
+    localStorage.setItem(COORDINATOR_STORAGE_KEY, $("coordinatorSelect").value);
   });
 
   $("generateMonthButton").addEventListener("click", () => {
@@ -150,17 +157,22 @@ function bindEvents() {
   });
 
   $("scheduleGrid").addEventListener("change", handleScheduleChange);
+  $("mobileSchedule").addEventListener("change", handleScheduleChange);
+  $("weekTabs").addEventListener("click", handleWeekClick);
   $("pendingRows").addEventListener("click", handlePendingClick);
+  $("coordinatorRows").addEventListener("click", handleCoordinatorAction);
   $("musicianRows").addEventListener("click", handleMusicianAction);
   $("functionRows").addEventListener("click", handleFunctionAction);
   $("eventRows").addEventListener("click", handleEventAction);
   $("availabilityRows").addEventListener("click", handleAvailabilityAction);
 
+  $("coordinatorForm").addEventListener("submit", saveCoordinator);
   $("musicianForm").addEventListener("submit", saveMusician);
   $("functionForm").addEventListener("submit", saveFunction);
   $("eventForm").addEventListener("submit", saveEvent);
   $("availabilityForm").addEventListener("submit", saveAvailability);
 
+  $("clearCoordinatorForm").addEventListener("click", clearCoordinatorForm);
   $("clearMusicianForm").addEventListener("click", clearMusicianForm);
   $("clearFunctionForm").addEventListener("click", clearFunctionForm);
   $("clearEventForm").addEventListener("click", clearEventForm);
@@ -177,14 +189,11 @@ function renderAll() {
   $("scheduleTitle").textContent = `${database.meta.titlePrefix} - ${formatMonthYear(selectedMonth, selectedYear)}`;
   $("gridTitle").textContent = `${database.meta.titlePrefix} - ${formatMonthYear(selectedMonth, selectedYear)}`;
 
-  const events = getMonthEvents(database, selectedMonth, selectedYear);
-  $("gridSubtitle").textContent = events.length
-    ? `${events.length} data(s) de evento no mês selecionado`
-    : "Nenhum evento cadastrado para este mês.";
-
+  renderCoordinatorSelect();
   renderTabs();
   renderSchedule();
   renderPending();
+  renderCoordinators();
   renderMusicians();
   renderFunctions();
   renderEvents();
@@ -202,18 +211,124 @@ function renderTabs() {
   });
 }
 
+function renderCoordinatorSelect() {
+  const coordinators = getActiveCoordinators(database);
+  const fallback = coordinators[0] || database.coordenadores[0];
+  const savedId = localStorage.getItem(COORDINATOR_STORAGE_KEY);
+  const selected = coordinators.some((item) => item.id_coordenador === savedId)
+    ? savedId
+    : fallback?.id_coordenador || "";
+
+  $("coordinatorSelect").innerHTML = coordinators.length
+    ? coordinators.map((coordenador) => (
+      `<option value="${escapeHtml(coordenador.id_coordenador)}">${escapeHtml(coordenador.nome)}</option>`
+    )).join("")
+    : `<option value="">${escapeHtml(APP_CONFIG.DEFAULT_COORDINATOR_NAME)}</option>`;
+
+  $("coordinatorSelect").value = selected;
+  if (selected) localStorage.setItem(COORDINATOR_STORAGE_KEY, selected);
+}
+
+function getWeekGroups(events) {
+  const groups = new Map();
+
+  events.forEach((evento) => {
+    const start = startOfWeek(parseISODate(evento.data_evento));
+    const key = toISODate(start);
+    if (!groups.has(key)) {
+      const end = new Date(start);
+      end.setDate(end.getDate() + 6);
+      groups.set(key, {
+        key,
+        start,
+        end,
+        events: [],
+      });
+    }
+    groups.get(key).events.push(evento);
+  });
+
+  return [...groups.values()]
+    .sort((a, b) => a.key.localeCompare(b.key))
+    .map((group, index) => ({
+      ...group,
+      label: `Semana ${index + 1} - ${formatShortDate(group.start)} a ${formatShortDate(group.end)}`,
+      events: group.events.sort((a, b) => (
+        a.data_evento.localeCompare(b.data_evento)
+        || String(a.horario || "").localeCompare(String(b.horario || ""))
+        || String(a.nome_evento || "").localeCompare(String(b.nome_evento || ""), "pt-BR")
+      )),
+    }));
+}
+
+function resolveSelectedWeek(weekGroups) {
+  if (!weekGroups.length) {
+    selectedWeekKey = "";
+    return null;
+  }
+
+  const saved = weekGroups.find((week) => week.key === selectedWeekKey);
+  if (saved) return saved;
+
+  const today = todayISO();
+  const current = weekGroups.find((week) => (
+    today >= week.key && today <= toISODate(week.end)
+  ));
+  const next = current || weekGroups[0];
+  selectedWeekKey = next.key;
+  return next;
+}
+
+function renderWeekTabs(weekGroups, activeKey) {
+  $("weekTabs").innerHTML = weekGroups.map((week) => `
+    <button class="week-tab ${week.key === activeKey ? "is-active" : ""}" type="button" data-week="${escapeHtml(week.key)}">
+      <span>${escapeHtml(week.label)}</span>
+      <small>${escapeHtml(String(week.events.length))} evento(s)</small>
+    </button>
+  `).join("");
+}
+
+function handleWeekClick(event) {
+  const button = event.target.closest("button[data-week]");
+  if (!button) return;
+  selectedWeekKey = button.dataset.week;
+  renderSchedule();
+}
+
+function startOfWeek(date) {
+  const next = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  const day = next.getDay();
+  next.setDate(next.getDate() + (day === 0 ? -6 : 1 - day));
+  return next;
+}
+
+function formatShortDate(date) {
+  return new Intl.DateTimeFormat("pt-BR", {
+    day: "2-digit",
+    month: "2-digit",
+  }).format(date);
+}
+
 function renderSchedule() {
   const events = getMonthEvents(database, selectedMonth, selectedYear)
     .filter((evento) => evento.status !== "Cancelado");
   const functions = getActiveFunctions(database);
+  const weekGroups = getWeekGroups(events);
+  const activeWeek = resolveSelectedWeek(weekGroups);
+  const weekEvents = activeWeek?.events || [];
 
-  if (!events.length || !functions.length) {
+  renderWeekTabs(weekGroups, activeWeek?.key || "");
+  $("gridSubtitle").textContent = activeWeek
+    ? `${activeWeek.label} | ${weekEvents.length} evento(s)`
+    : "Nenhum evento cadastrado para este mês.";
+
+  if (!weekEvents.length || !functions.length) {
     $("scheduleGrid").innerHTML = `<p class="empty-state">Gere os eventos do mês e mantenha funções ativas para montar a grade.</p>`;
     $("mobileSchedule").innerHTML = "";
     return;
   }
 
-  const header = events.map((evento) => `
+  const header = weekEvents.map((evento) => `
     <th>
       <strong>${escapeHtml(String(new Date(`${evento.data_evento}T12:00:00`).getDate()).padStart(2, "0"))} ${escapeHtml(evento.dia_semana)}</strong>
       <small>${escapeHtml(evento.nome_evento)} - ${escapeHtml(evento.horario || "")}</small>
@@ -226,7 +341,7 @@ function renderSchedule() {
         <strong>${escapeHtml(funcao.nome_funcao)}</strong>
         <small>${escapeHtml(funcao.tipo_funcao)}</small>
       </td>
-      ${events.map((evento) => renderScheduleCell(evento, funcao)).join("")}
+      ${weekEvents.map((evento) => renderScheduleCell(evento, funcao)).join("")}
     </tr>
   `).join("");
 
@@ -242,50 +357,49 @@ function renderSchedule() {
     </table>
   `;
 
-  $("mobileSchedule").innerHTML = events.map((evento) => `
+  $("mobileSchedule").innerHTML = weekEvents.map((evento) => `
     <article class="day-card">
       <header>
         <h3>${escapeHtml(evento.dia_semana)} - ${escapeHtml(formatDateBR(evento.data_evento))}</h3>
         <p class="muted">${escapeHtml(evento.nome_evento)} às ${escapeHtml(evento.horario || "")}</p>
       </header>
       <div class="day-list">
-        ${functions.map((funcao) => {
-          const assignment = getAssignment(database, evento.id_evento, funcao.id_funcao);
-          return `
-            <div class="day-item">
+        ${functions.map((funcao) => `
+          <div class="day-item day-item-editable">
+            <div>
               <strong>${escapeHtml(funcao.nome_funcao)}</strong>
-              <span>
-                ${escapeHtml(assignment?.nome_musico || "Selecionar músico")}
-                ${assignment ? `<span class="badge ${statusClass(assignment.status_confirmacao)}">${escapeHtml(assignment.status_confirmacao)}</span>` : ""}
-              </span>
+              <small>${escapeHtml(funcao.tipo_funcao)}</small>
             </div>
-          `;
-        }).join("")}
+            ${renderAssignmentControl(evento, funcao)}
+          </div>
+        `).join("")}
       </div>
     </article>
   `).join("");
 }
 
 function renderScheduleCell(evento, funcao) {
+  return `<td>${renderAssignmentControl(evento, funcao)}</td>`;
+}
+
+function renderAssignmentControl(evento, funcao) {
   const assignment = getAssignment(database, evento.id_evento, funcao.id_funcao);
   const options = getMusicianOptions(database, funcao, evento.data_evento);
   const selected = assignment?.id_musico || "";
 
   return `
-    <td>
-      <div class="assignment-cell">
-        <select data-event-id="${escapeHtml(evento.id_evento)}" data-function-id="${escapeHtml(funcao.id_funcao)}" aria-label="${escapeHtml(funcao.nome_funcao)} em ${escapeHtml(formatDateBR(evento.data_evento))}">
-          <option value="">Selecionar músico</option>
-          ${renderMusicianOptionGroup("Indicados", options.preferred, selected)}
-          ${renderMusicianOptionGroup("Outros ativos", options.others, selected)}
-        </select>
-        <div class="assignment-meta">
-          ${assignment ? `<span class="badge ${statusClass(assignment.status_confirmacao)}">${escapeHtml(assignment.status_confirmacao)}</span>` : ""}
-          ${assignment?.status_pendencia ? `<span class="badge ${statusClass(assignment.status_pendencia)}">${escapeHtml(assignment.status_pendencia)}</span>` : ""}
-        </div>
-        ${assignment?.observacao_musico ? `<small class="availability-note">${escapeHtml(assignment.observacao_musico)}</small>` : ""}
+    <div class="assignment-cell">
+      <select data-event-id="${escapeHtml(evento.id_evento)}" data-function-id="${escapeHtml(funcao.id_funcao)}" aria-label="${escapeHtml(funcao.nome_funcao)} em ${escapeHtml(formatDateBR(evento.data_evento))}">
+        <option value="">Selecionar músico</option>
+        ${renderMusicianOptionGroup("Indicados", options.preferred, selected)}
+        ${renderMusicianOptionGroup("Outros ativos", options.others, selected)}
+      </select>
+      <div class="assignment-meta">
+        ${assignment ? `<span class="badge ${statusClass(assignment.status_confirmacao)}">${escapeHtml(assignment.status_confirmacao)}</span>` : ""}
+        ${assignment?.status_pendencia ? `<span class="badge ${statusClass(assignment.status_pendencia)}">${escapeHtml(assignment.status_pendencia)}</span>` : ""}
       </div>
-    </td>
+      ${assignment?.observacao_musico ? `<small class="availability-note">${escapeHtml(assignment.observacao_musico)}</small>` : ""}
+    </div>
   `;
 }
 
@@ -313,6 +427,26 @@ function renderPending() {
       </td>
     </tr>
   `).join("") : `<tr><td colspan="5">Nenhuma pendência para o mês selecionado.</td></tr>`;
+}
+
+function renderCoordinators() {
+  $("coordinatorRows").innerHTML = database.coordenadores
+    .slice()
+    .sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR"))
+    .map((coordenador) => `
+      <tr>
+        <td>${escapeHtml(coordenador.nome)}</td>
+        <td>${escapeHtml([coordenador.telefone, coordenador.email].filter(Boolean).join(" | "))}</td>
+        <td><span class="badge ${coordenador.status === "Ativo" ? "status-confirmed" : "status-muted"}">${escapeHtml(coordenador.status)}</span></td>
+        <td>${escapeHtml(coordenador.observacoes || "")}</td>
+        <td>
+          <div class="row-actions">
+            <button type="button" data-action="edit" data-id="${escapeHtml(coordenador.id_coordenador)}">Editar</button>
+            <button type="button" data-action="toggle" data-id="${escapeHtml(coordenador.id_coordenador)}">${coordenador.status === "Ativo" ? "Inativar" : "Ativar"}</button>
+          </div>
+        </td>
+      </tr>
+    `).join("") || `<tr><td colspan="5">Nenhum coordenador cadastrado.</td></tr>`;
 }
 
 function renderMusicians() {
@@ -486,6 +620,28 @@ async function submitRemanejamento(event) {
   renderAll();
 }
 
+function saveCoordinator(event) {
+  event.preventDefault();
+  const id = $("coordinatorId").value || makeId("coord");
+  const existing = database.coordenadores.find((item) => item.id_coordenador === id);
+  const next = {
+    id_coordenador: id,
+    nome: $("coordinatorFullName").value.trim(),
+    telefone: $("coordinatorPhone").value.trim(),
+    email: $("coordinatorEmail").value.trim(),
+    status: $("coordinatorStatus").value,
+    observacoes: $("coordinatorNotes").value.trim(),
+  };
+
+  if (existing) Object.assign(existing, next);
+  else database.coordenadores.push(next);
+
+  localStorage.setItem(COORDINATOR_STORAGE_KEY, id);
+  clearCoordinatorForm();
+  persistLocal("Coordenador salvo.");
+  renderAll();
+}
+
 function saveMusician(event) {
   event.preventDefault();
   const id = $("musicianId").value || makeId("musico");
@@ -590,6 +746,28 @@ function saveAvailability(event) {
   renderAll();
 }
 
+function handleCoordinatorAction(event) {
+  const button = event.target.closest("button[data-action]");
+  if (!button) return;
+  const coordenador = database.coordenadores.find((item) => item.id_coordenador === button.dataset.id);
+  if (!coordenador) return;
+
+  if (button.dataset.action === "edit") {
+    $("coordinatorId").value = coordenador.id_coordenador;
+    $("coordinatorFullName").value = coordenador.nome;
+    $("coordinatorPhone").value = coordenador.telefone;
+    $("coordinatorEmail").value = coordenador.email;
+    $("coordinatorStatus").value = coordenador.status;
+    $("coordinatorNotes").value = coordenador.observacoes;
+  }
+
+  if (button.dataset.action === "toggle") {
+    coordenador.status = coordenador.status === "Ativo" ? "Inativo" : "Ativo";
+    persistLocal("Status do coordenador atualizado.");
+    renderAll();
+  }
+}
+
 function handleMusicianAction(event) {
   const button = event.target.closest("button[data-action]");
   if (!button) return;
@@ -683,6 +861,12 @@ function handleAvailabilityAction(event) {
     persistLocal("Disponibilidade removida.");
     renderAll();
   }
+}
+
+function clearCoordinatorForm() {
+  $("coordinatorForm").reset();
+  $("coordinatorId").value = "";
+  $("coordinatorStatus").value = "Ativo";
 }
 
 function clearMusicianForm() {
@@ -787,7 +971,9 @@ function setStatus(message) {
 }
 
 function coordinatorName() {
-  return $("coordinatorName").value.trim() || APP_CONFIG.DEFAULT_COORDINATOR_NAME;
+  const selectedId = $("coordinatorSelect").value;
+  return database?.coordenadores.find((item) => item.id_coordenador === selectedId)?.nome
+    || APP_CONFIG.DEFAULT_COORDINATOR_NAME;
 }
 
 function availabilityClass(status) {

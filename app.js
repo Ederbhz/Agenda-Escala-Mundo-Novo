@@ -228,6 +228,7 @@ export function normalizeDatabase(database) {
       defaultLocation: database?.meta?.defaultLocation || seed.meta.defaultLocation,
       defaultTime: database?.meta?.defaultTime || seed.meta.defaultTime,
     },
+    coordenadores: Array.isArray(database?.coordenadores) ? database.coordenadores : seed.coordenadores,
     musicos: Array.isArray(database?.musicos) ? database.musicos : seed.musicos,
     funcoes: Array.isArray(database?.funcoes) ? database.funcoes : seed.funcoes,
     eventos: Array.isArray(database?.eventos) ? database.eventos : seed.eventos,
@@ -235,6 +236,19 @@ export function normalizeDatabase(database) {
     escala: Array.isArray(database?.escala) ? database.escala : seed.escala,
     historico: Array.isArray(database?.historico) ? database.historico : seed.historico,
   };
+
+  next.coordenadores = next.coordenadores.map((coordenador) => ({
+    id_coordenador: coordenador.id_coordenador || makeId("coord"),
+    nome: coordenador.nome || coordenador.nome_coordenador || "",
+    telefone: coordenador.telefone || "",
+    email: coordenador.email || "",
+    status: coordenador.status || "Ativo",
+    observacoes: coordenador.observacoes || "",
+  })).sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR"));
+
+  if (!next.coordenadores.length) {
+    next.coordenadores = seed.coordenadores.slice();
+  }
 
   next.musicos = next.musicos.map((musico) => ({
     id_musico: musico.id_musico || makeId("musico"),
@@ -311,6 +325,25 @@ export function normalizeDatabase(database) {
 }
 
 export function createSeedDatabase() {
+  const coordenadores = [
+    {
+      id_coordenador: "coord-eder",
+      nome: "Eder",
+      telefone: "",
+      email: "",
+      status: "Ativo",
+      observacoes: "Coordenação geral",
+    },
+    {
+      id_coordenador: "coord-ministerio-musica",
+      nome: "Coordenação Ministério de Música",
+      telefone: "",
+      email: "",
+      status: "Ativo",
+      observacoes: "",
+    },
+  ];
+
   const funcoes = [
     ["func-adoracao", "Adoração", "Serviço", 1],
     ["func-cenaculo", "Cenáculo", "Serviço", 2],
@@ -404,6 +437,7 @@ export function createSeedDatabase() {
       defaultLocation: "Comunidade Mundo Novo",
       defaultTime: "19:30",
     },
+    coordenadores,
     musicos,
     funcoes,
     eventos,
@@ -461,6 +495,12 @@ export function getActiveFunctions(database) {
   return database.funcoes
     .filter((funcao) => funcao.status !== "Inativo")
     .sort((a, b) => a.ordem_exibicao - b.ordem_exibicao);
+}
+
+export function getActiveCoordinators(database) {
+  return database.coordenadores
+    .filter((coordenador) => coordenador.status !== "Inativo")
+    .sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR"));
 }
 
 export function getActiveMusicians(database) {

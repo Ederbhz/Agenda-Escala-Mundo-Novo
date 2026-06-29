@@ -71,7 +71,7 @@
           </label>
           <label>
             <span>Responsável</span>
-            <input id="coordinatorName" type="text" />
+            <select id="coordinatorSelect"></select>
           </label>
           <button id="generateMonthButton" class="primary" type="button">Gerar eventos fixos</button>
           <button id="saveButton" type="button">Salvar alterações</button>
@@ -96,6 +96,7 @@
         <nav class="tabs" aria-label="Seções do coordenador">
           <button class="tab is-active" type="button" data-tab="escala">Montar escala</button>
           <button class="tab" type="button" data-tab="pendencias">Pendências</button>
+          <button class="tab" type="button" data-tab="coordenadores">Coordenadores</button>
           <button class="tab" type="button" data-tab="musicos">Músicos</button>
           <button class="tab" type="button" data-tab="funcoes">Funções</button>
           <button class="tab" type="button" data-tab="eventos">Eventos</button>
@@ -111,6 +112,7 @@
             </div>
             <button id="exportButton" type="button">Exportar JSON</button>
           </div>
+          <div id="weekTabs" class="week-tabs" aria-label="Semanas do mês"></div>
           <div id="scheduleGrid" class="schedule-scroll"></div>
           <div id="mobileSchedule" class="mobile-schedule"></div>
         </section>
@@ -134,6 +136,56 @@
                 </tr>
               </thead>
               <tbody id="pendingRows"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="tab-panel" data-panel="coordenadores">
+          <div class="section-heading">
+            <div>
+              <h2>Coordenadores</h2>
+              <p class="muted">Cadastre as pessoas que podem assumir a responsabilidade pelas alterações da escala.</p>
+            </div>
+          </div>
+          <form id="coordinatorForm" class="editor-form">
+            <input id="coordinatorId" type="hidden" />
+            <label>
+              <span>Nome completo</span>
+              <input id="coordinatorFullName" type="text" required />
+            </label>
+            <label>
+              <span>Telefone/WhatsApp</span>
+              <input id="coordinatorPhone" type="tel" />
+            </label>
+            <label>
+              <span>E-mail</span>
+              <input id="coordinatorEmail" type="email" />
+            </label>
+            <label>
+              <span>Status</span>
+              <select id="coordinatorStatus"></select>
+            </label>
+            <label class="form-wide">
+              <span>Observações</span>
+              <textarea id="coordinatorNotes" rows="2"></textarea>
+            </label>
+            <div class="form-actions form-wide">
+              <button class="primary" type="submit">Salvar coordenador</button>
+              <button id="clearCoordinatorForm" type="button">Limpar</button>
+            </div>
+          </form>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Nome</th>
+                  <th>Contato</th>
+                  <th>Status</th>
+                  <th>Observações</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody id="coordinatorRows"></tbody>
             </table>
           </div>
         </section>

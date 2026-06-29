@@ -24,13 +24,13 @@ A paleta aplicada no CSS foi extraída da própria marca:
 - Branco gelo: `#ebeef2`
 - Dourado de destaque: `#c59b42`
 
-As telas foram ajustadas para uso em celular e tablet; no coordenador, a grade larga vira cards por data em telas menores.
+As telas foram ajustadas para uso em celular e tablet; no coordenador, a grade larga vira cards editáveis por data em telas menores e a montagem da escala é separada por semana.
 
 ## Arquivos principais
 
 - `index.html`: tela inicial com acesso ao coordenador e ao músico.
 - `coordenador.html`: área administrativa com grade mensal, cadastros, pendências e histórico.
-- `musico.html`: consulta individual para confirmar ou recusar presença.
+- `musico.html`: consulta individual para confirmar ou recusar presença e adicionar escala confirmada à agenda.
 - `instalar.html`: instruções para instalar o app no Android, iPhone ou iPad.
 - `manifest.webmanifest` e `service-worker.js`: arquivos do PWA instalável.
 - `style.css`: estilos responsivos.
@@ -75,6 +75,7 @@ A senha inicial do coordenador é `mundo-novo`. Troque em `config.js` antes de p
 O Apps Script cria e usa estas abas:
 
 - `Musicos`: `id_musico`, `nome`, `telefone`, `email`, `instrumentos`, `status`, `observacoes`
+- `Coordenadores`: `id_coordenador`, `nome`, `telefone`, `email`, `status`, `observacoes`
 - `FuncoesEscala`: `id_funcao`, `nome_funcao`, `tipo_funcao`, `ordem_exibicao`, `status`
 - `Eventos`: `id_evento`, `nome_evento`, `data_evento`, `dia_semana`, `horario`, `local`, `status`, `observacoes`
 - `Disponibilidade`: `id_disponibilidade`, `id_musico`, `nome_musico`, `data`, `disponibilidade`, `observacoes`
@@ -125,10 +126,11 @@ https://seu-usuario.github.io/escala-mundo-novo/
 1. O coordenador entra em `coordenador.html`.
 2. Seleciona mês e ano.
 3. Clica em `Gerar eventos fixos` para criar Noite de Louvor, Missa Quinta-Feira e as duas Missas Dominicais.
-4. Preenche a grade escolhendo músicos por função.
+4. Escolhe a semana e preenche a grade escolhendo músicos por função.
 5. Clica em `Salvar alterações`.
 6. O músico entra em `musico.html`, busca seu nome e confirma ou recusa.
-7. Recusas aparecem em `Pendências`, onde o coordenador remaneja e o histórico é registrado.
+7. Depois da confirmação, o músico pode abrir o evento no Google Agenda ou baixar um arquivo `.ics` para outros calendários.
+8. Recusas aparecem em `Pendências`, onde o coordenador remaneja e o histórico é registrado.
 
 ## Checklist antes de publicar
 
