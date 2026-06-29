@@ -1,20 +1,22 @@
 :root {
   color-scheme: light;
-  --bg: #f4f6f8;
+  --bg: #f2f5fa;
   --surface: #ffffff;
-  --surface-alt: #eef7f4;
-  --ink: #20262e;
-  --muted: #637083;
-  --line: #d9e0e7;
-  --accent: #146c5f;
-  --accent-strong: #0c4b42;
-  --accent-soft: #dff1ed;
-  --blue: #245a9c;
-  --gold: #b7791f;
+  --surface-alt: #e9f0fa;
+  --ink: #162238;
+  --muted: #5d6c82;
+  --line: #d6dfec;
+  --accent: #062966;
+  --accent-strong: #041b45;
+  --accent-soft: #e6edf8;
+  --blue: #204e8b;
+  --blue-mid: #0c3b82;
+  --blue-soft: #dbe7f7;
+  --gold: #c59b42;
   --green: #1f7a4d;
   --red: #b33a3a;
   --violet: #6d4aa2;
-  --shadow: 0 16px 42px rgba(32, 38, 46, 0.08);
+  --shadow: 0 16px 42px rgba(6, 41, 102, 0.12);
 }
 
 * {
@@ -28,7 +30,9 @@ html {
 body {
   margin: 0;
   min-height: 100vh;
-  background: var(--bg);
+  background:
+    linear-gradient(180deg, rgba(219, 231, 247, 0.72), rgba(242, 245, 250, 0.96) 320px),
+    var(--bg);
   color: var(--ink);
   font-family:
     Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
@@ -45,7 +49,7 @@ textarea {
 button,
 .button,
 .nav-actions a {
-  min-height: 42px;
+  min-height: 44px;
   border: 1px solid var(--line);
   border-radius: 8px;
   background: var(--surface);
@@ -115,13 +119,13 @@ button:disabled {
   justify-content: space-between;
   gap: 16px;
   padding: 14px clamp(16px, 4vw, 42px);
-  background: rgba(255, 255, 255, 0.92);
+  background: rgba(255, 255, 255, 0.94);
   border-bottom: 1px solid var(--line);
   backdrop-filter: blur(14px);
 }
 
 .topbar-on-photo {
-  background: rgba(17, 24, 39, 0.45);
+  background: rgba(4, 27, 69, 0.72);
   border-bottom-color: rgba(255, 255, 255, 0.22);
   color: #ffffff;
 }
@@ -142,9 +146,17 @@ button:disabled {
   height: 44px;
   place-items: center;
   border-radius: 50%;
-  background: var(--accent);
+  background: #ffffff;
   color: #ffffff;
   font-weight: 800;
+  overflow: hidden;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.88);
+}
+
+.brand-mark img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .brand strong,
@@ -172,7 +184,7 @@ button:disabled {
 }
 
 .home-page {
-  background: #111827;
+  background: var(--accent-strong);
 }
 
 .home-hero {
@@ -181,15 +193,27 @@ button:disabled {
   align-items: center;
   padding: clamp(28px, 6vw, 72px);
   background:
-    linear-gradient(90deg, rgba(10, 22, 30, 0.85), rgba(10, 22, 30, 0.52), rgba(10, 22, 30, 0.2)),
-    url("https://images.unsplash.com/photo-1511379938547-c1f69419868d?auto=format&fit=crop&w=1800&q=80");
-  background-position: center;
-  background-size: cover;
+    linear-gradient(90deg, rgba(4, 27, 69, 0.95), rgba(6, 41, 102, 0.86), rgba(32, 78, 139, 0.64)),
+    url("./assets/logo-mundo-novo.jpg");
+  background-position: center right;
+  background-size: auto 82%;
+  background-repeat: no-repeat;
   color: #ffffff;
 }
 
 .home-content {
   width: min(760px, 100%);
+}
+
+.home-logo {
+  display: block;
+  width: clamp(86px, 17vw, 136px);
+  height: clamp(86px, 17vw, 136px);
+  border: 3px solid rgba(255, 255, 255, 0.88);
+  border-radius: 50%;
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.28);
+  margin-bottom: 18px;
+  object-fit: cover;
 }
 
 .eyebrow {
@@ -214,7 +238,7 @@ button:disabled {
 
 .home-copy {
   max-width: 620px;
-  color: rgba(255, 255, 255, 0.86);
+  color: rgba(255, 255, 255, 0.9);
   font-size: 1.12rem;
   margin: 18px 0 0;
 }
@@ -296,7 +320,7 @@ button:disabled {
 
 .status-pill {
   background: var(--accent-soft);
-  color: var(--accent-strong);
+  color: var(--accent);
 }
 
 .control-bar {
@@ -328,7 +352,7 @@ textarea {
   border-radius: 8px;
   background: #ffffff;
   color: var(--ink);
-  min-height: 42px;
+  min-height: 44px;
   padding: 10px 12px;
 }
 
@@ -447,8 +471,8 @@ td {
 }
 
 th {
-  background: #eef2f6;
-  color: #334155;
+  background: #e6edf8;
+  color: var(--accent);
   font-size: 0.82rem;
   position: sticky;
   top: 0;
@@ -492,7 +516,7 @@ tbody tr:hover td {
 }
 
 .schedule-table th:first-child {
-  background: #e4edf5;
+  background: #dbe7f7;
 }
 
 .schedule-table td:first-child {
@@ -675,7 +699,7 @@ tbody tr:hover td {
   }
 }
 
-@media (max-width: 720px) {
+@media (max-width: 860px) {
   .topbar,
   .page-heading,
   .section-heading,
@@ -697,7 +721,8 @@ tbody tr:hover td {
 
   .home-hero {
     min-height: calc(100vh - 132px);
-    background-position: 58% center;
+    background-position: center bottom 24px;
+    background-size: min(68vw, 300px);
   }
 
   .control-bar,
@@ -718,6 +743,15 @@ tbody tr:hover td {
     display: block;
   }
 
+  button,
+  .button,
+  .nav-actions a,
+  input,
+  select,
+  textarea {
+    min-height: 48px;
+  }
+
   .tab-panel {
     padding: 14px;
   }
@@ -725,6 +759,28 @@ tbody tr:hover td {
   th,
   td {
     padding: 9px;
+  }
+}
+
+@media (max-width: 540px) {
+  .app-shell {
+    padding: 14px;
+  }
+
+  .home-hero {
+    padding: 22px;
+  }
+
+  .home-content h1 {
+    font-size: clamp(2.4rem, 15vw, 4.2rem);
+  }
+
+  .home-actions {
+    flex-direction: column;
+  }
+
+  .day-item {
+    grid-template-columns: 1fr;
   }
 }
 

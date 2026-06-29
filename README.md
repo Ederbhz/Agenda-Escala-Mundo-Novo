@@ -13,6 +13,19 @@ O botão `Gerar eventos fixos` cria automaticamente a agenda recorrente:
 
 Os horários de segunda e quinta podem ser ajustados no cadastro de eventos depois da geração.
 
+## Identidade visual
+
+O layout usa a logo do perfil público `@comunidademundonovobh` como asset local em `assets/logo-mundo-novo.jpg`.
+A paleta aplicada no CSS foi extraída da própria marca:
+
+- Azul principal: `#062966`
+- Azul médio: `#204e8b`
+- Azul de apoio: `#0c3b82`
+- Branco gelo: `#ebeef2`
+- Dourado de destaque: `#c59b42`
+
+As telas foram ajustadas para uso em celular e tablet; no coordenador, a grade larga vira cards por data em telas menores.
+
 ## Arquivos principais
 
 - `index.html`: tela inicial com acesso ao coordenador e ao músico.
