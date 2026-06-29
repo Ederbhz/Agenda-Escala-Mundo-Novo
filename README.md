@@ -112,8 +112,8 @@ Opção 2: abra `coordenador.html`, expanda `Configuração da API`, cole a URL 
 1. Crie um repositório, por exemplo `escala-mundo-novo`.
 2. Envie todos os arquivos deste projeto para a branch `main`.
 3. No GitHub, acesse `Settings > Pages`.
-4. Em `Build and deployment`, selecione `GitHub Actions`.
-5. O workflow `.github/workflows/pages.yml` publicará o site automaticamente.
+4. Em `Build and deployment`, selecione `Deploy from a branch`.
+5. Escolha a branch `main` e a pasta `/root`.
 6. O site ficará em um endereço parecido com:
 
 ```text
