@@ -43,6 +43,10 @@
         </div>
         <form id="loginForm" class="inline-form">
           <label>
+            <span>Coordenador</span>
+            <select id="loginCoordinator" required></select>
+          </label>
+          <label>
             <span>Senha de acesso</span>
             <input id="adminPassword" type="password" autocomplete="current-password" required />
           </label>
@@ -165,6 +169,14 @@
               <span>Status</span>
               <select id="coordinatorStatus"></select>
             </label>
+            <label>
+              <span>Nova senha</span>
+              <input id="coordinatorPassword" type="password" autocomplete="new-password" />
+            </label>
+            <label>
+              <span>Confirmar senha</span>
+              <input id="coordinatorPasswordConfirm" type="password" autocomplete="new-password" />
+            </label>
             <label class="form-wide">
               <span>Observações</span>
               <textarea id="coordinatorNotes" rows="2"></textarea>
@@ -181,6 +193,7 @@
                   <th>Nome</th>
                   <th>Contato</th>
                   <th>Status</th>
+                  <th>Senha</th>
                   <th>Observações</th>
                   <th>Ações</th>
                 </tr>

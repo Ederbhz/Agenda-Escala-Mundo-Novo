@@ -9,7 +9,11 @@ export const APP_CONFIG = {
   CONFIG_STORAGE_KEY: "mn-escala-config-v2",
   ADMIN_SESSION_KEY: "mn-escala-admin-session-v2",
 
-  // Proteção simples da tela do coordenador. Troque antes de publicar.
+  // Hash SHA-256 da senha inicial dos coordenadores de exemplo: "mundo-novo".
+  // Depois do primeiro acesso, altere as senhas pela aba Coordenadores.
+  DEFAULT_COORDINATOR_PASSWORD_HASH: "750f50616b51d2efdce3430110a15e03adbb6be3be1e005c2d499b9eb55f4d3b",
+
+  // Mantido apenas como fallback de migração para bases antigas.
   DEFAULT_ADMIN_PASSWORD: "mundo-novo",
   DEFAULT_COORDINATOR_NAME: "Coordenador",
 };

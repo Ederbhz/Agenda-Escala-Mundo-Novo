@@ -34,7 +34,7 @@ As telas foram ajustadas para uso em celular e tablet; no coordenador, a grade l
 - `instalar.html`: instruções para instalar o app no Android, iPhone ou iPad.
 - `manifest.webmanifest` e `service-worker.js`: arquivos do PWA instalável.
 - `style.css`: estilos responsivos.
-- `config.js`: URL da API, chave administrativa e senha simples da área do coordenador.
+- `config.js`: URL da API, chave administrativa e senha inicial de migração dos coordenadores.
 - `app.js`: dados, regras, armazenamento local e comunicação com Google Apps Script.
 - `coordenador.js`: fluxo do coordenador.
 - `musico.js`: fluxo do músico.
@@ -68,14 +68,14 @@ Depois acesse:
 - `http://localhost:5500/coordenador.html`
 - `http://localhost:5500/musico.html`
 
-A senha inicial do coordenador é `mundo-novo`. Troque em `config.js` antes de publicar.
+Os coordenadores iniciais usam a senha `mundo-novo`. Depois do primeiro acesso, altere a senha pela aba `Coordenadores`.
 
 ## Estrutura da planilha
 
 O Apps Script cria e usa estas abas:
 
 - `Musicos`: `id_musico`, `nome`, `telefone`, `email`, `instrumentos`, `status`, `observacoes`
-- `Coordenadores`: `id_coordenador`, `nome`, `telefone`, `email`, `status`, `observacoes`
+- `Coordenadores`: `id_coordenador`, `nome`, `telefone`, `email`, `status`, `observacoes`, `senha_hash`
 - `FuncoesEscala`: `id_funcao`, `nome_funcao`, `tipo_funcao`, `ordem_exibicao`, `status`
 - `Eventos`: `id_evento`, `nome_evento`, `data_evento`, `dia_semana`, `horario`, `local`, `status`, `observacoes`
 - `Disponibilidade`: `id_disponibilidade`, `id_musico`, `nome_musico`, `data`, `disponibilidade`, `observacoes`
@@ -126,17 +126,18 @@ https://seu-usuario.github.io/escala-mundo-novo/
 ## Fluxo de uso
 
 1. O coordenador entra em `coordenador.html`.
-2. Seleciona mês e ano.
-3. Clica em `Gerar eventos fixos` para criar Noite de Louvor, Missa Quinta-Feira e as duas Missas Dominicais.
-4. Escolhe a semana e preenche a grade escolhendo músicos por função.
-5. Clica em `Salvar alterações`.
-6. O músico entra em `musico.html`, busca seu nome e confirma ou recusa.
-7. Depois da confirmação, o músico pode abrir o evento no Google Agenda ou baixar um arquivo `.ics` para outros calendários.
-8. Recusas aparecem em `Pendências`, onde o coordenador remaneja e o histórico é registrado.
+2. Seleciona seu nome de coordenador e informa a senha cadastrada.
+3. Seleciona mês e ano.
+4. Clica em `Gerar eventos fixos` para criar Noite de Louvor, Missa Quinta-Feira e as duas Missas Dominicais.
+5. Escolhe a semana e preenche a grade escolhendo músicos por função.
+6. Clica em `Salvar alterações`.
+7. O músico entra em `musico.html`, busca seu nome e confirma ou recusa.
+8. Depois da confirmação, o músico pode abrir o evento no Google Agenda ou baixar um arquivo `.ics` para outros calendários.
+9. Recusas aparecem em `Pendências`, onde o coordenador remaneja e o histórico é registrado.
 
 ## Checklist antes de publicar
 
-- Troque a senha `DEFAULT_ADMIN_PASSWORD` em `config.js`.
+- A senha inicial dos coordenadores de exemplo é `mundo-novo`; depois altere pela aba `Coordenadores`.
 - Troque `ADMIN_KEY` em `config.js` e em `apps-script/Code.gs`.
 - Publique o Apps Script como Web App e cole a URL em `config.js` ou na tela do coordenador.
 - Depois de subir no GitHub Pages, teste os links `coordenador.html` e `musico.html` em uma aba anônima ou em outro dispositivo.

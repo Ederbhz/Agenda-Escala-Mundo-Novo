@@ -66,22 +66,40 @@ async function init() {
 }
 
 function setupAuth() {
-  const expected = APP_CONFIG.DEFAULT_ADMIN_PASSWORD;
+  renderLoginCoordinatorSelect();
   const hasSession = sessionStorage.getItem(APP_CONFIG.ADMIN_SESSION_KEY) === "ok";
-  if (!expected || hasSession) {
+  if (hasSession) {
     showCoordinatorApp();
     return;
   }
 
-  $("loginForm").addEventListener("submit", (event) => {
+  $("loginForm").addEventListener("submit", async (event) => {
     event.preventDefault();
     const password = $("adminPassword").value.trim();
-    if (password === expected || (getAdminKey() && password === getAdminKey())) {
-      sessionStorage.setItem(APP_CONFIG.ADMIN_SESSION_KEY, "ok");
-      showCoordinatorApp();
+    const coordinatorId = $("loginCoordinator").value;
+    const coordinator = database.coordenadores.find((item) => item.id_coordenador === coordinatorId);
+    let passwordHash = "";
+    try {
+      passwordHash = password ? await hashPassword(password) : "";
+    } catch {
+      $("loginMessage").textContent = "Não foi possível validar a senha neste navegador.";
       return;
     }
-    $("loginMessage").textContent = "Senha inválida.";
+    const passwordMatchesCoordinator = Boolean(coordinator?.senha_hash && passwordHash === coordinator.senha_hash);
+    const passwordMatchesMigrationFallback = Boolean(
+      APP_CONFIG.DEFAULT_ADMIN_PASSWORD
+      && password === APP_CONFIG.DEFAULT_ADMIN_PASSWORD
+      && !coordinator?.senha_hash
+    );
+
+    if (passwordMatchesCoordinator || passwordMatchesMigrationFallback || (getAdminKey() && password === getAdminKey())) {
+      sessionStorage.setItem(APP_CONFIG.ADMIN_SESSION_KEY, "ok");
+      if (coordinatorId) localStorage.setItem(COORDINATOR_STORAGE_KEY, coordinatorId);
+      showCoordinatorApp();
+      renderCoordinatorSelect();
+      return;
+    }
+    $("loginMessage").textContent = "Coordenador ou senha inválidos.";
   });
 }
 
@@ -191,6 +209,7 @@ function renderAll() {
   $("gridTitle").textContent = `${database.meta.titlePrefix} - ${formatMonthYear(selectedMonth, selectedYear)}`;
 
   renderCoordinatorSelect();
+  renderLoginCoordinatorSelect();
   renderTabs();
   renderSchedule();
   renderPending();
@@ -228,6 +247,20 @@ function renderCoordinatorSelect() {
 
   $("coordinatorSelect").value = selected;
   if (selected) localStorage.setItem(COORDINATOR_STORAGE_KEY, selected);
+}
+
+function renderLoginCoordinatorSelect() {
+  const coordinators = getActiveCoordinators(database);
+  const savedId = localStorage.getItem(COORDINATOR_STORAGE_KEY);
+  $("loginCoordinator").innerHTML = coordinators.length
+    ? coordinators.map((coordenador) => (
+      `<option value="${escapeHtml(coordenador.id_coordenador)}">${escapeHtml(coordenador.nome)}</option>`
+    )).join("")
+    : `<option value="">Nenhum coordenador ativo</option>`;
+
+  if (coordinators.some((coordenador) => coordenador.id_coordenador === savedId)) {
+    $("loginCoordinator").value = savedId;
+  }
 }
 
 function getWeekGroups(events) {
@@ -439,6 +472,7 @@ function renderCoordinators() {
         <td>${escapeHtml(coordenador.nome)}</td>
         <td>${escapeHtml([coordenador.telefone, coordenador.email].filter(Boolean).join(" | "))}</td>
         <td><span class="badge ${coordenador.status === "Ativo" ? "status-confirmed" : "status-muted"}">${escapeHtml(coordenador.status)}</span></td>
+        <td><span class="badge ${coordenador.senha_hash ? "status-confirmed" : "status-waiting"}">${coordenador.senha_hash ? "Configurada" : "Definir"}</span></td>
         <td>${escapeHtml(coordenador.observacoes || "")}</td>
         <td>
           <div class="row-actions">
@@ -447,7 +481,7 @@ function renderCoordinators() {
           </div>
         </td>
       </tr>
-    `).join("") || `<tr><td colspan="5">Nenhum coordenador cadastrado.</td></tr>`;
+    `).join("") || `<tr><td colspan="6">Nenhum coordenador cadastrado.</td></tr>`;
 }
 
 function renderMusicians() {
@@ -621,10 +655,39 @@ async function submitRemanejamento(event) {
   renderAll();
 }
 
-function saveCoordinator(event) {
+async function saveCoordinator(event) {
   event.preventDefault();
   const id = $("coordinatorId").value || makeId("coord");
   const existing = database.coordenadores.find((item) => item.id_coordenador === id);
+  const password = $("coordinatorPassword").value.trim();
+  const passwordConfirm = $("coordinatorPasswordConfirm").value.trim();
+
+  if (!existing && !password) {
+    setStatus("Informe uma senha para o novo coordenador.");
+    return;
+  }
+
+  if (password || passwordConfirm) {
+    if (password.length < 6) {
+      setStatus("A senha do coordenador precisa ter pelo menos 6 caracteres.");
+      return;
+    }
+    if (password !== passwordConfirm) {
+      setStatus("A confirmação da senha não confere.");
+      return;
+    }
+  }
+
+  let passwordHash = existing?.senha_hash || "";
+  if (password) {
+    try {
+      passwordHash = await hashPassword(password);
+    } catch {
+      setStatus("Não foi possível salvar a senha neste navegador.");
+      return;
+    }
+  }
+
   const next = {
     id_coordenador: id,
     nome: $("coordinatorFullName").value.trim(),
@@ -632,6 +695,7 @@ function saveCoordinator(event) {
     email: $("coordinatorEmail").value.trim(),
     status: $("coordinatorStatus").value,
     observacoes: $("coordinatorNotes").value.trim(),
+    senha_hash: passwordHash,
   };
 
   if (existing) Object.assign(existing, next);
@@ -760,6 +824,8 @@ function handleCoordinatorAction(event) {
     $("coordinatorEmail").value = coordenador.email;
     $("coordinatorStatus").value = coordenador.status;
     $("coordinatorNotes").value = coordenador.observacoes;
+    $("coordinatorPassword").value = "";
+    $("coordinatorPasswordConfirm").value = "";
   }
 
   if (button.dataset.action === "toggle") {
@@ -868,6 +934,8 @@ function clearCoordinatorForm() {
   $("coordinatorForm").reset();
   $("coordinatorId").value = "";
   $("coordinatorStatus").value = "Ativo";
+  $("coordinatorPassword").value = "";
+  $("coordinatorPasswordConfirm").value = "";
 }
 
 function clearMusicianForm() {
@@ -993,6 +1061,17 @@ function initialStatusMessage() {
       : "Pronto. Alterações salvas neste dispositivo.";
   }
   return getApiUrl() ? "Pronto. API configurada." : "Pronto. Modo local.";
+}
+
+async function hashPassword(password) {
+  if (!globalThis.crypto?.subtle) {
+    throw new Error("Criptografia indisponível neste navegador.");
+  }
+  const bytes = new TextEncoder().encode(password);
+  const digest = await globalThis.crypto.subtle.digest("SHA-256", bytes);
+  return [...new Uint8Array(digest)]
+    .map((byte) => byte.toString(16).padStart(2, "0"))
+    .join("");
 }
 
 function coordinatorName() {

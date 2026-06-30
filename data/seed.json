@@ -13,7 +13,8 @@
       "telefone": "",
       "email": "",
       "status": "Ativo",
-      "observacoes": "Coordenação geral"
+      "observacoes": "Coordenação geral",
+      "senha_hash": "750f50616b51d2efdce3430110a15e03adbb6be3be1e005c2d499b9eb55f4d3b"
     },
     {
       "id_coordenador": "coord-ministerio-musica",
@@ -21,7 +22,8 @@
       "telefone": "",
       "email": "",
       "status": "Ativo",
-      "observacoes": ""
+      "observacoes": "",
+      "senha_hash": "750f50616b51d2efdce3430110a15e03adbb6be3be1e005c2d499b9eb55f4d3b"
     }
   ],
   "musicos": [

@@ -3,6 +3,8 @@ import { APP_CONFIG } from "./config.js";
 export const STORAGE_KEY = APP_CONFIG.LOCAL_STORAGE_KEY;
 export const CONFIG_KEY = APP_CONFIG.CONFIG_STORAGE_KEY;
 export const PENDING_CHANGES_KEY = `${STORAGE_KEY}-pending-changes`;
+export const DEFAULT_COORDINATOR_PASSWORD_HASH = APP_CONFIG.DEFAULT_COORDINATOR_PASSWORD_HASH
+  || "750f50616b51d2efdce3430110a15e03adbb6be3be1e005c2d499b9eb55f4d3b";
 
 export const MONTHS = [
   "Janeiro",
@@ -266,6 +268,7 @@ export function normalizeDatabase(database) {
     email: coordenador.email || "",
     status: coordenador.status || "Ativo",
     observacoes: coordenador.observacoes || "",
+    senha_hash: coordenador.senha_hash || coordenador.password_hash || DEFAULT_COORDINATOR_PASSWORD_HASH,
   })).sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR"));
 
   if (!next.coordenadores.length) {
@@ -355,6 +358,7 @@ export function createSeedDatabase() {
       email: "",
       status: "Ativo",
       observacoes: "Coordenação geral",
+      senha_hash: DEFAULT_COORDINATOR_PASSWORD_HASH,
     },
     {
       id_coordenador: "coord-ministerio-musica",
@@ -363,6 +367,7 @@ export function createSeedDatabase() {
       email: "",
       status: "Ativo",
       observacoes: "",
+      senha_hash: DEFAULT_COORDINATOR_PASSWORD_HASH,
     },
   ];
 

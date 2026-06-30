@@ -1,7 +1,8 @@
 const ADMIN_KEY = 'troque-esta-chave';
+const DEFAULT_COORDINATOR_PASSWORD_HASH = '750f50616b51d2efdce3430110a15e03adbb6be3be1e005c2d499b9eb55f4d3b';
 
 const SHEETS = {
-  Coordenadores: ['id_coordenador', 'nome', 'telefone', 'email', 'status', 'observacoes'],
+  Coordenadores: ['id_coordenador', 'nome', 'telefone', 'email', 'status', 'observacoes', 'senha_hash'],
   Musicos: ['id_musico', 'nome', 'telefone', 'email', 'instrumentos', 'status', 'observacoes'],
   FuncoesEscala: ['id_funcao', 'nome_funcao', 'tipo_funcao', 'ordem_exibicao', 'status'],
   Eventos: ['id_evento', 'nome_evento', 'data_evento', 'dia_semana', 'horario', 'local', 'status', 'observacoes'],
@@ -300,9 +301,13 @@ function getOrCreateSheet_(name) {
 
 function normalizeDatabase_(database) {
   const sample = sampleDatabase_();
+  const coordenadores = Array.isArray(database.coordenadores) ? database.coordenadores : sample.coordenadores;
   return {
     meta: Object.assign(sample.meta, database.meta || {}),
-    coordenadores: Array.isArray(database.coordenadores) ? database.coordenadores : sample.coordenadores,
+    coordenadores: coordenadores.map(function(coordenador) {
+      coordenador.senha_hash = coordenador.senha_hash || DEFAULT_COORDINATOR_PASSWORD_HASH;
+      return coordenador;
+    }),
     musicos: Array.isArray(database.musicos) ? database.musicos : [],
     funcoes: Array.isArray(database.funcoes) ? database.funcoes : [],
     eventos: Array.isArray(database.eventos) ? database.eventos : [],
@@ -431,8 +436,8 @@ function sampleDatabase_() {
       defaultTime: '19:30'
     },
     coordenadores: [
-      { id_coordenador: 'coord-eder', nome: 'Eder', telefone: '', email: '', status: 'Ativo', observacoes: 'Coordenação geral' },
-      { id_coordenador: 'coord-ministerio-musica', nome: 'Coordenação Ministério de Música', telefone: '', email: '', status: 'Ativo', observacoes: '' }
+      { id_coordenador: 'coord-eder', nome: 'Eder', telefone: '', email: '', status: 'Ativo', observacoes: 'Coordenação geral', senha_hash: DEFAULT_COORDINATOR_PASSWORD_HASH },
+      { id_coordenador: 'coord-ministerio-musica', nome: 'Coordenação Ministério de Música', telefone: '', email: '', status: 'Ativo', observacoes: '', senha_hash: DEFAULT_COORDINATOR_PASSWORD_HASH }
     ],
     musicos: [
       { id_musico: 'mus-maria', nome: 'Maria', telefone: '(00) 90000-0001', email: 'maria@email.com', instrumentos: ['Teclado', 'Voz', 'Adoração'], status: 'Ativo', observacoes: '' },
