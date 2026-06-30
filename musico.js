@@ -261,7 +261,7 @@ async function handleAssignmentClick(event) {
 
   if (button.dataset.action === "confirm") {
     confirmLocalAssignment(database, assignment.id_escala);
-    saveLocalDatabase(database);
+    saveLocalDatabase(database, { markDirty: true });
     render();
     setStatus("Presença confirmada.");
 
@@ -291,7 +291,7 @@ async function submitDecline(event) {
   if (!motivo) return;
 
   declineLocalAssignment(database, id, motivo);
-  saveLocalDatabase(database);
+  saveLocalDatabase(database, { markDirty: true });
   $("declineDialog").close();
   render();
   setStatus("Recusa registrada.");
@@ -311,7 +311,7 @@ async function reloadRemote() {
   const remote = await tryLoadRemoteDatabase();
   if (!remote) return;
   database = remote;
-  saveLocalDatabase(database);
+  saveLocalDatabase(database, { markDirty: false });
   renderMusicianList();
   render();
 }

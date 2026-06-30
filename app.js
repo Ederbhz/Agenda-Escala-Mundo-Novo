@@ -2,6 +2,7 @@ import { APP_CONFIG } from "./config.js";
 
 export const STORAGE_KEY = APP_CONFIG.LOCAL_STORAGE_KEY;
 export const CONFIG_KEY = APP_CONFIG.CONFIG_STORAGE_KEY;
+export const PENDING_CHANGES_KEY = `${STORAGE_KEY}-pending-changes`;
 
 export const MONTHS = [
   "Janeiro",
@@ -73,17 +74,19 @@ export const FIXED_EVENT_TEMPLATES = [
 ];
 
 export async function loadDatabase() {
+  const local = loadLocalDatabase();
+  if (local && hasLocalPendingChanges()) return local;
+
   const remote = await tryLoadRemoteDatabase();
   if (remote) {
-    saveLocalDatabase(remote);
+    saveLocalDatabase(remote, { markDirty: false });
     return remote;
   }
 
-  const local = loadLocalDatabase();
   if (local) return local;
 
   const seed = await loadSeedDatabase();
-  saveLocalDatabase(seed);
+  saveLocalDatabase(seed, { markDirty: false });
   return seed;
 }
 
@@ -97,10 +100,29 @@ export function loadLocalDatabase() {
   }
 }
 
-export function saveLocalDatabase(database) {
+export function saveLocalDatabase(database, options = {}) {
   const normalized = normalizeDatabase(database);
   localStorage.setItem(STORAGE_KEY, JSON.stringify(normalized));
+  if (options.markDirty === true) setLocalPendingChanges(true);
+  if (options.markDirty === false) setLocalPendingChanges(false);
   return normalized;
+}
+
+export function hasLocalPendingChanges() {
+  try {
+    return localStorage.getItem(PENDING_CHANGES_KEY) === "1";
+  } catch {
+    return false;
+  }
+}
+
+export function setLocalPendingChanges(hasPendingChanges) {
+  try {
+    if (hasPendingChanges) localStorage.setItem(PENDING_CHANGES_KEY, "1");
+    else localStorage.removeItem(PENDING_CHANGES_KEY);
+  } catch {
+    // Ignora ambientes onde o armazenamento local esteja indisponível.
+  }
 }
 
 export async function saveRemoteDatabase(database) {

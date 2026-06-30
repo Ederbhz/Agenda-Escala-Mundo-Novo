@@ -1,4 +1,4 @@
-const CACHE_NAME = "escala-mundo-novo-v2";
+const CACHE_NAME = "escala-mundo-novo-v3";
 
 const APP_SHELL = [
   "./",

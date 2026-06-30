@@ -24,6 +24,7 @@ import {
   getMonthEvents,
   getMusicianOptions,
   getPendingAssignments,
+  hasLocalPendingChanges,
   loadClientConfig,
   loadDatabase,
   makeId,
@@ -61,7 +62,7 @@ async function init() {
   setupAuth();
   bindEvents();
   renderAll();
-  setStatus(getApiUrl() ? "Pronto. API configurada." : "Pronto. Modo local.");
+  setStatus(initialStatusMessage());
 }
 
 function setupAuth() {
@@ -925,7 +926,12 @@ async function saveEverything() {
   setStatus("Enviando para a planilha...");
   try {
     const response = await saveRemoteDatabase(database);
-    setStatus(response?.ok ? "Alterações salvas na planilha." : "A planilha recusou o salvamento.");
+    if (response?.ok) {
+      database = saveLocalDatabase(database, { markDirty: false });
+      setStatus("Alterações salvas na planilha.");
+      return;
+    }
+    setStatus("A planilha recusou o salvamento. As alterações continuam salvas neste dispositivo.");
   } catch {
     setStatus("Salvo localmente. Não foi possível enviar para a planilha.");
   }
@@ -940,6 +946,16 @@ function saveConfig() {
 }
 
 async function reloadRemote(showStatus = true) {
+  if (showStatus && hasLocalPendingChanges()) {
+    const confirmed = window.confirm(
+      "Existem alterações salvas apenas neste dispositivo. Recarregar da planilha pode substituir essas alterações. Deseja continuar?",
+    );
+    if (!confirmed) {
+      setStatus("Recarregamento cancelado. Alterações locais preservadas.");
+      return;
+    }
+  }
+
   if (showStatus) setStatus("Carregando dados da planilha...");
   const remote = await tryLoadRemoteDatabase();
   if (!remote) {
@@ -947,7 +963,7 @@ async function reloadRemote(showStatus = true) {
     return;
   }
   database = remote;
-  saveLocalDatabase(database);
+  saveLocalDatabase(database, { markDirty: false });
   if (showStatus) setStatus("Dados recarregados da planilha.");
   renderAll();
 }
@@ -962,12 +978,21 @@ function exportJson() {
 }
 
 function persistLocal(message) {
-  database = saveLocalDatabase(database);
+  database = saveLocalDatabase(database, { markDirty: true });
   setStatus(message);
 }
 
 function setStatus(message) {
   $("syncStatus").textContent = message;
+}
+
+function initialStatusMessage() {
+  if (hasLocalPendingChanges()) {
+    return getApiUrl()
+      ? "Pronto. Existem alterações locais pendentes de salvar na planilha."
+      : "Pronto. Alterações salvas neste dispositivo.";
+  }
+  return getApiUrl() ? "Pronto. API configurada." : "Pronto. Modo local.";
 }
 
 function coordinatorName() {

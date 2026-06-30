@@ -108,6 +108,8 @@ ADMIN_KEY: "sua-chave",
 
 Opção 2: abra `coordenador.html`, expanda `Configuração da API`, cole a URL e a chave, e clique em `Guardar configuração`.
 
+Quando a planilha/API estiver configurada, alterações feitas no coordenador ficam salvas no dispositivo imediatamente e são marcadas como pendentes até `Salvar alterações` confirmar o envio para a planilha. Ao abrir o app novamente, alterações locais pendentes têm prioridade para não serem substituídas por uma planilha antiga.
+
 ## Publicar no GitHub Pages
 
 1. Crie um repositório, por exemplo `escala-mundo-novo`.
